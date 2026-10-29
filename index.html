@@ -114,6 +114,7 @@
     .slide-card { padding:13px 15px; border:1px solid var(--line); border-radius:10px; background:#fff; }
     .slide-card h4 { margin:0 0 7px; color:var(--blue); font-size:.86rem; text-transform:uppercase; letter-spacing:.05em; }
     .slide-card p { margin:5px 0; white-space:pre-wrap; }
+    .pdf-text { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font:.86rem/1.5 "Cascadia Mono",Consolas,"Courier New",monospace; color:#24374a; }
     .foot { color:var(--muted); text-align:center; padding:29px 0 5px; font-size:.84rem; }
     dialog { border:0; padding:0; width:min(760px, calc(100% - 28px)); max-height:min(88vh,900px); border-radius:18px; color:var(--ink); box-shadow:0 24px 80px rgba(5,24,43,.35); }
     dialog[open] { display:flex; flex-direction:column; }
@@ -233,7 +234,7 @@
     <div class="container">
       <section class="overview" aria-label="Course overview">
         <div class="stat"><strong>14</strong><span>English lecture units</span></div>
-        <div class="stat"><strong>210</strong><span>interactive practice questions · 15 per unit</span></div>
+        <div class="stat"><strong>420</strong><span>interactive practice questions · 30 per unit</span></div>
         <div class="stat"><strong id="completedCount">0 / 14</strong><span>applications completed on this device</span></div>
         <div class="stat"><strong>100% online</strong><span>lecture text and source readings built into the site</span></div>
       </section>
@@ -242,14 +243,14 @@
         <h2 id="aboutTitle">What is Academic English?</h2>
         <p class="definition"><strong>Definition:</strong> Academic English is the formal, precise, and evidence-based use of English to understand, discuss, and communicate ideas in higher education.</p>
         <p>This course develops the language skills first-year students need to study Economic, Commercial, and Management Sciences. It connects academic vocabulary, register, grammar, and clear writing with core ideas such as scarcity, opportunity cost, markets, money, national output, management, banking, and marketing.</p>
-        <p>Work through each unit’s lecture text, then use its short questions and applied case to explain an idea in your own words. The searchable exam-reading library contains the text extracted from the supplied exam PDF; its pages are presented on this site rather than as a PDF download.</p>
+        <p>Work through each unit’s complete source text, then use its interactive questions and applied case to explain an idea in your own words. All fourteen unit texts from the supplied PDF are embedded directly in the corresponding study sections.</p>
       </section>
 
       <section id="lectures" aria-labelledby="lectureHeading">
         <div class="toolbar">
           <div>
             <h2 class="section-title" id="lectureHeading">Lecture index</h2>
-            <p class="section-note">Study the source slide text, then complete 5 fill-in, 5 multiple-choice, and 5 sentence-order questions plus a module-specific application.</p>
+            <p class="section-note">Study the complete PDF unit text, then complete 10 fill-in, 10 multiple-choice, and 10 sentence-order questions plus a module-specific application.</p>
           </div>
           <button class="btn btn-light" id="resetProgress" type="button" title="Clear application completion marks">Reset progress</button>
         </div>
@@ -282,14 +283,6 @@
         <div class="empty" id="emptyState">No lectures match that search. Try another title, topic, or course area.</div>
       </section>
 
-      <section class="source-library" aria-labelledby="sourceLibraryTitle">
-        <div>
-          <h2 id="sourceLibraryTitle">Exam reading and question library</h2>
-          <p>Browse and search the complete text of the supplied exam PDF, arranged page by page. Reading passages and questions are native, selectable web content.</p>
-        </div>
-        <a class="btn btn-gold" href="exam-library.html">Open the exam library <span aria-hidden="true">→</span></a>
-      </section>
-
       <section class="method" aria-labelledby="methodTitle">
         <h2 id="methodTitle">A simple rhythm for active learning</h2>
         <p>Each application is designed to move from understanding language to using it in a realistic academic or professional situation.</p>
@@ -314,10 +307,12 @@
   </dialog>
 
   <script src="course-content.js"></script>
+  <script src="pdf-unit-content.js"></script>
   <script src="activity-bank.js"></script>
+  <script src="activity-expansion.js"></script>
   <script>
-    if (!window.lectureContent) {
-      throw new Error("Course lecture text did not load. Check that course-content.js is available.");
+    if (!window.lectureContent || !window.pdfUnitContent) {
+      throw new Error("Course unit text did not load. Check that the course content files are available.");
     }
     const lectures = [
       {
@@ -578,6 +573,11 @@
       }
     };
     Object.assign(interactiveActivities, window.extendedActivities || {});
+    for (const [unit, additions] of Object.entries(window.additionalActivities || {})) {
+      for (const type of ["fill", "mcq", "order"]) {
+        interactiveActivities[unit][type].push(...additions[type]);
+      }
+    }
 
     const categoryNames = {
       foundations:"Academic foundations", economics:"Economics and markets",
@@ -630,7 +630,7 @@
             <div class="card-kicker"><span class="lecture-no">LECTURE ${String(item.n).padStart(2,"0")}</span><span>${esc(categoryNames[item.category])}</span><span class="done-badge">✓ Applied</span></div>
             <h3>${esc(item.title)}</h3>
             <p class="topic">${esc(item.topic)}</p>
-            <div class="outcome"><b>Application outcome:</b> ${esc(item.outcome)}<br><b>Practice:</b> 5 fill-ins · 5 multiple choice · 5 sentence-order questions</div>
+            <div class="outcome"><b>Application outcome:</b> ${esc(item.outcome)}<br><b>Practice:</b> 10 fill-ins · 10 multiple choice · 10 sentence-order questions</div>
           </div>
           <div class="card-actions">
             <button class="btn btn-primary" type="button" data-study="${item.n}">Study unit</button>
@@ -687,7 +687,7 @@
       }).join("");
       return `<div class="practice-set">
         <h3>Interactive practice</h3>
-        <p class="practice-intro">Each lecture has five questions in each English exercise type. Correct answers remain hidden until the student submits an attempt.</p>
+        <p class="practice-intro">Each unit has ten questions in each English exercise type. Correct answers remain hidden until the student submits an attempt.</p>
         <details class="activity-group" open><summary>Fill in the blank · ${set.fill.length} questions</summary><div class="activity-group-body">${fillMarkup}</div></details>
         <details class="activity-group"><summary>Multiple choice · ${set.mcq.length} questions</summary><div class="activity-group-body">${mcqMarkup}</div></details>
         <details class="activity-group"><summary>Put the sentences in order · ${set.order.length} questions</summary><div class="activity-group-body">${orderMarkup}</div></details>
@@ -695,20 +695,33 @@
     }
     function renderLectureContent(lectureNumber) {
       const slides = window.lectureContent[lectureNumber];
-      if (!Array.isArray(slides) || !slides.length) {
-        throw new Error(`Lecture text is missing for unit ${lectureNumber}.`);
+      const pages = window.pdfUnitContent[lectureNumber];
+      if (!Array.isArray(slides) || !slides.length || !Array.isArray(pages) || !pages.length) {
+        throw new Error(`Complete PDF or slide text is missing for unit ${lectureNumber}.`);
       }
-      return `<div class="lesson-content"><div class="slide-list">${slides.map(slide => `
-        <article class="slide-card">
-          <h4>Slide ${slide.number}</h4>
-          ${slide.paragraphs.map(paragraph => `<p>${esc(paragraph)}</p>`).join("")}
-        </article>`).join("")}</div></div>`;
+      return `<div class="lesson-content">
+        <h3>Complete unit text from the PDF · ${pages.length} pages</h3>
+        <div class="slide-list">${pages.map(page => `
+          <article class="slide-card">
+            <h4>Source PDF · page ${page.page}</h4>
+            <pre class="pdf-text">${esc(page.text)}</pre>
+          </article>`).join("")}</div>
+        <details class="activity-group">
+          <summary>Presentation slide text · ${slides.length} slides</summary>
+          <div class="activity-group-body slide-list">${slides.map(slide => `
+            <article class="slide-card">
+              <h4>Slide ${slide.number}</h4>
+              ${slide.paragraphs.map(paragraph => `<p>${esc(paragraph)}</p>`).join("")}
+            </article>`).join("")}</div>
+        </details>
+      </div>`;
     }
     function openApplication(n, mode = "practice") {
       activeLecture = lectures.find(item => item.n === n);
       if (!activeLecture) return;
-      if (!Array.isArray(window.lectureContent[n]) || !window.lectureContent[n].length) {
-        throw new Error(`Lecture text is missing for unit ${n}.`);
+      if (!Array.isArray(window.lectureContent[n]) || !window.lectureContent[n].length ||
+          !Array.isArray(window.pdfUnitContent[n]) || !window.pdfUnitContent[n].length) {
+        throw new Error(`Complete PDF or slide text is missing for unit ${n}.`);
       }
       const app = activeLecture.application;
       document.getElementById("modalEyebrow").textContent = `LECTURE ${String(activeLecture.n).padStart(2,"0")} · ${categoryNames[activeLecture.category].toUpperCase()}`;
