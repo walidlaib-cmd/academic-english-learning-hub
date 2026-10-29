@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10263d">
+  <title>Academic English | Learning Platform</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --navy: #10263d;
+      --navy-2: #173653;
+      --blue: #2875a3;
+      --teal: #218f83;
+      --gold: #e9ae46;
+      --coral: #dc705b;
+      --ink: #213246;
+      --muted: #65788b;
+      --line: #dfe8ef;
+      --paper: #ffffff;
+      --wash: #f2f6f9;
+      --shadow: 0 14px 36px rgba(20, 48, 73, .09);
+      font-family: "Segoe UI", Aptos, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--wash); line-height: 1.55; }
+    button, input, select { font: inherit; }
+    a { color: inherit; }
+    .cover {
+      min-height: 410px; padding: 28px max(5vw, 24px) 56px; color: #fff;
+      background:
+        radial-gradient(circle at 83% 20%, rgba(233,174,70,.22), transparent 20%),
+        radial-gradient(circle at 93% 78%, rgba(33,143,131,.24), transparent 24%),
+        linear-gradient(120deg, #10263d 0%, #173e5c 64%, #155d69 130%);
+      position: relative; overflow: hidden;
+    }
+    .cover::after {
+      content: ""; position: absolute; width: 400px; height: 400px; right: -120px; bottom: -250px;
+      border: 1px solid rgba(255,255,255,.15); border-radius: 50%;
+      box-shadow: 0 0 0 36px rgba(255,255,255,.035), 0 0 0 76px rgba(255,255,255,.025);
+      pointer-events: none;
+    }
+    .cover-inner, .container { width: min(1180px, 100%); margin: 0 auto; }
+    .cover-top { display:flex; align-items:center; justify-content:space-between; gap:16px; position:relative; z-index:1; }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:700; letter-spacing:.02em; }
+    .brand-mark { width:42px; height:42px; display:grid; place-items:center; border-radius:13px; background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.2); color:var(--gold); font-weight:800; }
+    .cover-link { color:#f4d58f; text-decoration:none; font-size:.93rem; }
+    .cover-content { max-width:800px; padding-top:65px; position:relative; z-index:1; }
+    .eyebrow { color:#f2cb76; text-transform:uppercase; font-size:.78rem; letter-spacing:.16em; font-weight:800; }
+    h1 { font-size:clamp(2.3rem, 6vw, 4.4rem); line-height:1.05; margin:13px 0 15px; letter-spacing:-.04em; }
+    .cover-subtitle { font-size:1.12rem; color:#d8e5ee; max-width:680px; margin:0 0 25px; }
+    .identity { display:flex; flex-wrap:wrap; gap:10px; }
+    .identity span { border:1px solid rgba(255,255,255,.21); background:rgba(255,255,255,.075); padding:9px 14px; border-radius:999px; font-size:.9rem; }
+    .identity strong { color:#fff; }
+    .cover-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; border-radius:10px; padding:11px 17px; font-weight:750; cursor:pointer; text-decoration:none; transition:transform .16s, box-shadow .16s, background .16s; }
+    .btn:hover { transform:translateY(-1px); }
+    .btn-gold { background:var(--gold); color:var(--navy); box-shadow:0 8px 22px rgba(233,174,70,.2); }
+    .btn-outline { border:1px solid rgba(255,255,255,.35); color:#fff; background:rgba(255,255,255,.07); }
+    .btn-primary { background:var(--navy); color:#fff; }
+    .btn-light { background:#eaf2f7; color:var(--navy); }
+    .main { padding:0 24px 56px; }
+    .container { margin-top:-27px; position:relative; z-index:2; }
+    .overview { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .stat { background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:17px 19px; box-shadow:var(--shadow); }
+    .stat strong { display:block; color:var(--navy); font-size:1.45rem; line-height:1.2; }
+    .stat span { color:var(--muted); font-size:.87rem; }
+    .toolbar { margin:28px 0 17px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+    .section-title { margin:0; color:var(--navy); font-size:1.65rem; letter-spacing:-.025em; }
+    .section-note { margin:3px 0 0; color:var(--muted); font-size:.93rem; }
+    .filters { display:flex; flex-wrap:wrap; gap:9px; margin:15px 0 21px; }
+    .search-wrap { position:relative; flex:1 1 260px; max-width:410px; }
+    .search-wrap input, .filters select {
+      width:100%; border:1px solid var(--line); background:#fff; color:var(--ink);
+      border-radius:10px; padding:11px 13px; outline:none;
+    }
+    .search-wrap input:focus, .filters select:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(40,117,163,.12); }
+    .filters select { width:auto; min-width:190px; }
+    .grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:15px; }
+    .lecture-card { --accent:var(--blue); background:var(--paper); border:1px solid var(--line); border-radius:15px; overflow:hidden; box-shadow:0 5px 18px rgba(20,48,73,.045); display:flex; flex-direction:column; min-height:286px; transition:transform .16s, box-shadow .16s; }
+    .lecture-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+    .card-top { height:7px; background:var(--accent); }
+    .card-body { padding:17px 18px 14px; flex:1; }
+    .card-kicker { display:flex; justify-content:space-between; align-items:center; gap:8px; color:var(--muted); font-size:.77rem; font-weight:750; text-transform:uppercase; letter-spacing:.06em; }
+    .lecture-no { color:var(--accent); }
+    .done-badge { display:none; color:#177567; background:#e4f4ef; padding:3px 8px; border-radius:999px; letter-spacing:0; text-transform:none; }
+    .lecture-card.is-done .done-badge { display:inline-flex; }
+    .lecture-card h3 { color:var(--navy); font-size:1.13rem; line-height:1.3; margin:11px 0 7px; }
+    .topic { color:var(--muted); font-size:.89rem; margin:0; min-height:43px; }
+    .outcome { margin-top:12px; padding-top:11px; border-top:1px solid #edf1f4; font-size:.83rem; color:#485c6d; }
+    .outcome b { color:var(--navy); }
+    .card-actions { display:flex; gap:8px; padding:0 18px 17px; }
+    .card-actions .btn { padding:9px 11px; font-size:.84rem; flex:1; }
+    .card-actions .btn-primary { flex:1.2; }
+    .empty { display:none; padding:34px; text-align:center; color:var(--muted); background:#fff; border:1px dashed var(--line); border-radius:14px; }
+    .method { margin-top:36px; background:linear-gradient(120deg,#fff,#f7fafc); border:1px solid var(--line); border-radius:16px; padding:24px; }
+    .method h2 { margin:0 0 5px; color:var(--navy); font-size:1.28rem; }
+    .method p { margin:0; color:var(--muted); }
+    .method-flow { display:grid; grid-template-columns:repeat(5,1fr); gap:9px; margin-top:17px; }
+    .method-step { background:#fff; border:1px solid var(--line); border-radius:11px; padding:12px; position:relative; }
+    .method-step b { color:var(--blue); display:block; font-size:.82rem; margin-bottom:3px; }
+    .method-step span { color:#52677a; font-size:.84rem; }
+    .intro { margin-top:24px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:0 5px 18px rgba(20,48,73,.045); }
+    .intro h2, .source-library h2 { margin:0 0 8px; color:var(--navy); font-size:1.35rem; }
+    .intro p { color:#52677a; margin:9px 0; }
+    .definition { border-left:4px solid var(--gold); background:#fff8e8; padding:13px 15px; border-radius:8px; color:var(--navy)!important; }
+    .source-library { margin-top:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:linear-gradient(120deg,#173e5c,#155d69); color:#fff; border-radius:16px; padding:24px; }
+    .source-library h2 { color:#fff; }
+    .source-library p { margin:0; color:#d8e5ee; max-width:700px; }
+    .lesson-content { margin:13px 0; }
+    .lesson-content h3 { margin:0 0 10px; }
+    .slide-list { display:grid; gap:10px; }
+    .slide-card { padding:13px 15px; border:1px solid var(--line); border-radius:10px; background:#fff; }
+    .slide-card h4 { margin:0 0 7px; color:var(--blue); font-size:.86rem; text-transform:uppercase; letter-spacing:.05em; }
+    .slide-card p { margin:5px 0; white-space:pre-wrap; }
+    .foot { color:var(--muted); text-align:center; padding:29px 0 5px; font-size:.84rem; }
+    dialog { border:0; padding:0; width:min(760px, calc(100% - 28px)); max-height:min(88vh,900px); border-radius:18px; color:var(--ink); box-shadow:0 24px 80px rgba(5,24,43,.35); }
+    dialog[open] { display:flex; flex-direction:column; }
+    dialog::backdrop { background:rgba(8,25,42,.68); backdrop-filter:blur(3px); }
+    .modal-head { position:sticky; top:0; z-index:1; padding:19px 22px; color:#fff; background:var(--navy); display:flex; justify-content:space-between; gap:15px; align-items:flex-start; }
+    .modal-head .eyebrow { font-size:.7rem; }
+    .modal-head h2 { margin:4px 0 0; font-size:1.35rem; }
+    .close { border:1px solid rgba(255,255,255,.3); border-radius:8px; color:#fff; background:transparent; padding:5px 10px; cursor:pointer; font-size:1.15rem; }
+    .modal-content { padding:19px 23px 22px; overflow:auto; min-height:0; }
+    .app-meta { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+    .app-meta span { font-size:.8rem; color:#31536e; background:#eaf2f7; border-radius:999px; padding:5px 10px; font-weight:700; }
+    .challenge { border-left:4px solid var(--gold); background:#fff8e8; padding:13px 15px; border-radius:8px; margin-bottom:16px; }
+    .challenge b { display:block; color:var(--navy); margin-bottom:3px; }
+    .modal-content h3 { color:var(--navy); font-size:1rem; margin:17px 0 8px; }
+    .modal-content ol { padding-left:22px; margin:7px 0 12px; }
+    .modal-content li { padding:3px 0 3px 3px; }
+    .deliverable { background:#edf7f4; border:1px solid #d2ebe3; border-radius:10px; padding:12px 14px; margin-top:15px; }
+    .deliverable b { color:#177567; }
+    .reflection { color:#51677a; font-style:italic; margin:12px 0 0; }
+    .practice-set { margin-top:22px; padding-top:18px; border-top:1px solid var(--line); }
+    .practice-set > h3 { color:var(--navy); margin:0 0 5px; font-size:1.12rem; }
+    .practice-intro { margin:0 0 14px; color:var(--muted); font-size:.9rem; }
+    .activity-group { margin:12px 0; border:1px solid var(--line); border-radius:12px; background:#fff; overflow:hidden; }
+    .activity-group > summary { cursor:pointer; padding:13px 15px; color:var(--navy); font-weight:800; background:#f5f8fa; }
+    .activity-group[open] > summary { border-bottom:1px solid var(--line); }
+    .activity-group-body { padding:5px 13px 12px; }
+    .exercise-card { background:#f8fafc; border:1px solid var(--line); border-radius:12px; padding:15px; margin:12px 0; }
+    .exercise-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:7px; }
+    .exercise-head h4 { margin:0; color:var(--navy); font-size:.98rem; }
+    .exercise-tag { color:var(--blue); background:#eaf2f7; border-radius:999px; padding:4px 9px; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+    .exercise-prompt { margin:7px 0 11px; color:#3e5366; font-size:.91rem; }
+    .fill-sentence { line-height:2; }
+    .fill-input { display:inline-block; width:min(210px, 45vw); padding:6px 8px; margin:2px 3px; border:1px solid #b9cbd8; border-radius:7px; background:#fff; color:var(--ink); }
+    .fill-input:focus { outline:2px solid rgba(40,117,163,.22); border-color:var(--blue); }
+    .mcq-options { display:grid; gap:7px; }
+    .mcq-option { display:flex; align-items:flex-start; gap:9px; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; cursor:pointer; }
+    .mcq-option input { margin-top:4px; accent-color:var(--blue); }
+    .order-list { display:grid; gap:7px; list-style:none; padding:0; margin:0; }
+    .order-item { display:flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; }
+    .order-item p { flex:1; margin:0; font-size:.89rem; }
+    .order-controls { display:flex; gap:4px; }
+    .order-controls button { border:1px solid var(--line); background:#f3f7fa; color:var(--navy); border-radius:6px; min-width:30px; padding:3px 6px; cursor:pointer; font-weight:800; }
+    .order-controls button:disabled { opacity:.4; cursor:not-allowed; }
+    .exercise-actions { display:flex; align-items:center; gap:10px; margin-top:11px; }
+    .exercise-actions .btn { padding:8px 12px; font-size:.82rem; }
+    .exercise-feedback { font-size:.84rem; font-weight:750; }
+    .exercise-feedback.is-correct { color:#177567; }
+    .exercise-feedback.is-incorrect { color:#a74434; }
+    .answer-reveal { margin-top:9px; padding:9px 11px; border-radius:8px; background:#edf7f4; border:1px solid #d2ebe3; color:#245d54; font-size:.85rem; }
+    .answer-reveal[hidden] { display:none; }
+    .translation-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(180px,1fr) auto; gap:9px; align-items:center; padding:10px 0; border-bottom:1px solid #e7edf2; }
+    .translation-row:last-child { border-bottom:0; }
+    .translation-source { font-size:.88rem; color:var(--ink); }
+    .translation-row input { min-width:0; width:100%; border:1px solid #b9cbd8; background:#fff; border-radius:7px; padding:8px; }
+    .translation-row input:focus { outline:2px solid rgba(40,117,163,.22); border-color:var(--blue); }
+    .translation-row .btn { padding:7px 9px; font-size:.78rem; }
+    .translation-model { grid-column:1/-1; padding:8px 10px; background:#edf7f4; border:1px solid #d2ebe3; border-radius:8px; color:#245d54; font-size:.9rem; direction:rtl; text-align:right; }
+    .translation-model[hidden] { display:none; }
+    .modal-actions { display:flex; justify-content:space-between; align-items:center; gap:9px; margin-top:19px; flex-wrap:wrap; }
+    .modal-actions .btn { font-size:.9rem; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:900px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .method-flow { grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:620px) {
+      .cover { min-height:460px; padding:20px 20px 55px; }
+      .cover-content { padding-top:55px; }
+      .main { padding:0 15px 40px; }
+      .overview { grid-template-columns:repeat(2,1fr); gap:8px; }
+      .stat { padding:13px; }
+      .grid { grid-template-columns:1fr; }
+      .method-flow { grid-template-columns:1fr; }
+      .filters { display:grid; grid-template-columns:1fr; }
+      .search-wrap { max-width:none; }
+      .filters select { width:100%; }
+      .cover-top { align-items:flex-start; }
+      .brand { font-size:.86rem; }
+      .cover-link { font-size:.82rem; }
+      .exercise-card { padding:12px; }
+      .order-item { align-items:flex-start; }
+      .order-controls { flex-direction:column; }
+      .translation-row { grid-template-columns:1fr; }
+      .intro, .source-library { padding:18px; }
+    }
+    @media print {
+      .cover-actions,.filters,.card-actions,.method,.cover-link { display:none!important; }
+      .cover { min-height:auto; padding-bottom:25px; print-color-adjust:exact; }
+      .container { margin-top:18px; }
+      .grid { grid-template-columns:repeat(2,1fr); }
+      .lecture-card { break-inside:avoid; box-shadow:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="cover" id="home">
+    <div class="cover-inner">
+      <div class="cover-top">
+        <div class="brand"><span class="brand-mark" aria-hidden="true">A</span><span>Academic English Learning Hub</span></div>
+        <a class="cover-link" href="#lectures">Explore the lecture index ↓</a>
+      </div>
+      <div class="cover-content">
+        <div class="eyebrow">University English Programme</div>
+        <h1>Learn the language.<br>Engage with ideas.</h1>
+        <p class="cover-subtitle">An interactive Academic English course connecting language skills with economics, commerce, finance, and management.</p>
+        <div class="identity" aria-label="Programme information">
+          <span><strong>University</strong> · Mohamed El Bachir El Ibrahimi University of Bordj Bou Arréridj</span>
+          <span><strong>Academic level</strong> · First Year — Common Core</span>
+          <span><strong>Professor</strong> · Laib Walid</span>
+        </div>
+        <div class="cover-actions">
+          <a class="btn btn-gold" href="#lectures">Browse all lectures <span aria-hidden="true">↓</span></a>
+          <a class="btn btn-outline" href="#about">Read the course introduction</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container">
+      <section class="overview" aria-label="Course overview">
+        <div class="stat"><strong>14</strong><span>English lecture units</span></div>
+        <div class="stat"><strong>210</strong><span>interactive practice questions · 15 per unit</span></div>
+        <div class="stat"><strong id="completedCount">0 / 14</strong><span>applications completed on this device</span></div>
+        <div class="stat"><strong>100% online</strong><span>lecture text and source readings built into the site</span></div>
+      </section>
+
+      <section class="intro" id="about" aria-labelledby="aboutTitle">
+        <h2 id="aboutTitle">What is Academic English?</h2>
+        <p class="definition"><strong>Definition:</strong> Academic English is the formal, precise, and evidence-based use of English to understand, discuss, and communicate ideas in higher education.</p>
+        <p>This course develops the language skills first-year students need to study Economic, Commercial, and Management Sciences. It connects academic vocabulary, register, grammar, and clear writing with core ideas such as scarcity, opportunity cost, markets, money, national output, management, banking, and marketing.</p>
+        <p>Work through each unit’s lecture text, then use its short questions and applied case to explain an idea in your own words. The searchable exam-reading library contains the text extracted from the supplied exam PDF; its pages are presented on this site rather than as a PDF download.</p>
+      </section>
+
+      <section id="lectures" aria-labelledby="lectureHeading">
+        <div class="toolbar">
+          <div>
+            <h2 class="section-title" id="lectureHeading">Lecture index</h2>
+            <p class="section-note">Study the source slide text, then complete 5 fill-in, 5 multiple-choice, and 5 sentence-order questions plus a module-specific application.</p>
+          </div>
+          <button class="btn btn-light" id="resetProgress" type="button" title="Clear application completion marks">Reset progress</button>
+        </div>
+        <div class="filters" role="search">
+          <label class="search-wrap">
+            <span class="sr-only">Search lectures</span>
+            <input type="search" id="searchInput" placeholder="Search title, topic, or skill…" autocomplete="off">
+          </label>
+          <label>
+            <span class="sr-only">Filter by course area</span>
+            <select id="categoryFilter">
+              <option value="all">All course areas</option>
+              <option value="foundations">Academic foundations</option>
+              <option value="economics">Economics and markets</option>
+              <option value="management">Management and organizations</option>
+              <option value="finance">Finance and banking</option>
+              <option value="business">Business and marketing</option>
+            </select>
+          </label>
+          <label>
+            <span class="sr-only">Sort lectures</span>
+            <select id="sortFilter">
+              <option value="module">Course order</option>
+              <option value="title">Title A–Z</option>
+              <option value="progress">Incomplete first</option>
+            </select>
+          </label>
+        </div>
+        <div class="grid" id="lectureGrid" aria-live="polite"></div>
+        <div class="empty" id="emptyState">No lectures match that search. Try another title, topic, or course area.</div>
+      </section>
+
+      <section class="source-library" aria-labelledby="sourceLibraryTitle">
+        <div>
+          <h2 id="sourceLibraryTitle">Exam reading and question library</h2>
+          <p>Browse and search the complete text of the supplied exam PDF, arranged page by page. Reading passages and questions are native, selectable web content.</p>
+        </div>
+        <a class="btn btn-gold" href="exam-library.html">Open the exam library <span aria-hidden="true">→</span></a>
+      </section>
+
+      <section class="method" aria-labelledby="methodTitle">
+        <h2 id="methodTitle">A simple rhythm for active learning</h2>
+        <p>Each application is designed to move from understanding language to using it in a realistic academic or professional situation.</p>
+        <div class="method-flow">
+          <div class="method-step"><b>01 · NOTICE</b><span>Recall the concept and key vocabulary.</span></div>
+          <div class="method-step"><b>02 · DISCUSS</b><span>Compare interpretations with a partner.</span></div>
+          <div class="method-step"><b>03 · APPLY</b><span>Solve a module-specific case or task.</span></div>
+          <div class="method-step"><b>04 · SHARE</b><span>Present a concise result with a reason.</span></div>
+          <div class="method-step"><b>05 · REFLECT</b><span>Record a takeaway and next question.</span></div>
+        </div>
+      </section>
+      <footer class="foot">Academic English Learning Platform · First Year — Common Core · Professor Laib Walid · <a href="DEPLOYMENT.md">Build and deployment guide</a></footer>
+    </div>
+  </main>
+
+  <dialog id="applicationDialog" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div><div class="eyebrow" id="modalEyebrow">LECTURE APPLICATION</div><h2 id="modalTitle">Application</h2></div>
+      <button class="close" id="closeDialog" type="button" aria-label="Close application">×</button>
+    </div>
+    <div class="modal-content" id="modalContent"></div>
+  </dialog>
+
+  <script src="course-content.js"></script>
+  <script src="activity-bank.js"></script>
+  <script>
+    if (!window.lectureContent) {
+      throw new Error("Course lecture text did not load. Check that course-content.js is available.");
+    }
+    const lectures = [
+      {
+        n:1, title:"Academic Language", category:"foundations", color:"blue",
+        deck:"Unit_1_Academic_Language_Interactive.pptx",
+        topic:"Formal and informal vocabulary · precision · academic style · meaning in context",
+        outcome:"Revise a conversational statement for an academic audience.",
+        application:{
+          title:"From everyday language to academic expression", time:"12–15 minutes", grouping:"Pairs",
+          challenge:"A student writes: “If you try to answer, you get feedback even if your answer isn’t quite right.” Prepare a version suitable for an academic text.",
+          steps:["Underline informal or imprecise expressions (for example, try, get, quite right).","Replace them with precise alternatives such as attempt, receive, and correct.","Remove contractions and check that the revised sentence preserves the original meaning.","Share your version and explain why one vocabulary choice is more appropriate."],
+          deliverable:"One revised sentence and a brief justification of two language choices.",
+          reflection:"Which change improved precision most: vocabulary, register, or sentence structure?"
+        }
+      },
+      {
+        n:2, title:"Academic Study / Academic Life", category:"foundations", color:"teal",
+        deck:"Unit_2_Academic_Study_Interactive.pptx",
+        topic:"University vocabulary · courses and qualifications · faculties and departments",
+        outcome:"Introduce an academic profile and map a university structure.",
+        application:{
+          title:"My academic profile and university map", time:"15 minutes", grouping:"Pairs, then individual writing",
+          challenge:"Create a short profile of a first-year student and show how the student’s subject fits into a university.",
+          steps:["Use at least four terms: course, degree, discipline, faculty, department, undergraduate, or higher education.","Write a four-sentence profile using frames such as “I’m studying…”, “My course is…”, and “My main discipline is…”.","Draw or describe the structure: university → faculty → department → discipline.","Exchange profiles and ask one follow-up question about a course or qualification."],
+          deliverable:"A four-sentence academic profile plus a labelled university-structure map.",
+          reflection:"Which terms describe a person’s studies, and which describe the institution?"
+        }
+      },
+      {
+        n:3, title:"Business Discipline", category:"business", color:"coral",
+        deck:"Unit_3_Business_Discipline_Interactive.pptx",
+        topic:"Business organizations · location · customers and consumers · products and services",
+        outcome:"Recommend a business location and use business terms accurately.",
+        application:{
+          title:"Choose a location for a local business", time:"15–18 minutes", grouping:"Small groups",
+          challenge:"A small accountancy firm is choosing between a city-centre office and a lower-cost site outside the city.",
+          steps:["List two advantages and two costs associated with each location, including staff costs and access to clients.","Choose a location and support the recommendation with two reasons.","Classify people in a short example as customer (buyer) or consumer (user).","Use at least four terms: firm, company, industry, employee, employer, customer, consumer, product, or service."],
+          deliverable:"A one-minute recommendation using at least four unit terms.",
+          reflection:"Can a customer and a consumer be different people? Give an example."
+        }
+      },
+      {
+        n:4, title:"Economics Discipline", category:"economics", color:"gold",
+        deck:"Unit_4_Economics_Discipline_Interactive.pptx",
+        topic:"The economy · finance · income · investment · borrowing and lending · profit and loss",
+        outcome:"Explain an economic scenario using precise vocabulary and word forms.",
+        application:{
+          title:"Explain a small business finance decision", time:"15 minutes", grouping:"Pairs",
+          challenge:"A start-up borrows 20,000 dinars to purchase equipment. It earns 8,000 dinars in revenue and spends 5,500 on costs in its first period.",
+          steps:["Calculate the operating result: revenue minus costs. Decide whether it is profit or loss.","Describe the roles of borrower and lender; use borrow from, lend to, or owe accurately.","Choose appropriate word forms: economy/economic, finance/financial, invest/investment, profit/profitable.","Write three sentences explaining the decision and its result."],
+          deliverable:"A three-sentence explanation containing a correct profit/loss calculation and four unit terms.",
+          reflection:"What additional information would help you judge whether the business is financially sustainable?"
+        }
+      },
+      {
+        n:5, title:"Introduction to Economics", category:"economics", color:"blue",
+        deck:"Unit_5_Introduction_to_Economics_Interactive.pptx",
+        topic:"Scarcity · choice · opportunity cost · macroeconomics and microeconomics · factors of production",
+        outcome:"Explain a choice by identifying scarcity, alternatives, and opportunity cost.",
+        application:{
+          title:"A community must choose", time:"15–20 minutes", grouping:"Small groups",
+          challenge:"A town has limited funds. It can repair several streets or hire an additional police officer.",
+          steps:["Identify the scarce resource and the two alternatives.","State the opportunity cost of choosing the police officer.","Name the factors of production involved in each option (land, labour, capital, entrepreneurship).","Classify the question “How does this affect the whole town’s economy?” as macro or micro, then justify."],
+          deliverable:"A four-part decision statement using scarcity, opportunity cost, one factor of production, and macro/micro.",
+          reflection:"Why is opportunity cost not simply the money spent?"
+        }
+      },
+      {
+        n:6, title:"Money", category:"finance", color:"teal",
+        deck:"Unit_6_Money_Lecture.pptx",
+        topic:"Barter · functions of money · fiat money · simple present passive",
+        outcome:"Explain how money supports exchange and describe its functions.",
+        application:{
+          title:"Design an exchange system for campus", time:"15 minutes", grouping:"Groups of 3–4",
+          challenge:"Students want to exchange tutoring, printing, meals, and transport help. Direct barter is proving difficult.",
+          steps:["Describe one “coincidence of wants” problem the group might face.","Propose an accepted token, credit, or payment unit that makes exchange easier.","Explain how the proposed system acts as a medium of exchange, a store of value, and a measure of worth.","Write two passive sentences, such as “Prices are stated in…” and “Credits are accepted…”."],
+          deliverable:"A simple exchange-system proposal with all three money functions and two passive-voice sentences.",
+          reflection:"What gives users confidence that the proposed payment will be accepted?"
+        }
+      },
+      {
+        n:7, title:"Markets", category:"economics", color:"coral",
+        deck:"Unit_7_Markets_Lecture.pptx",
+        topic:"Demand · supply · curve movements and shifts · determinants of markets",
+        outcome:"Predict how a market event affects demand, supply, and price.",
+        application:{
+          title:"Market-shock scenario: strawberries", time:"15–18 minutes", grouping:"Pairs",
+          challenge:"A late frost reduces the strawberry harvest, while a social-media trend increases consumer interest in strawberries.",
+          steps:["Identify which event affects supply and which affects demand.","For each event, decide whether the relevant curve shifts left or right.","Predict the separate effect each event would have on equilibrium price and quantity.","Discuss the combined case: explain why the final quantity may be uncertain even if both events put upward pressure on price."],
+          deliverable:"A labelled two-event market sketch and a short explanation using demand, supply, quantity, and price.",
+          reflection:"How is a change in quantity demanded different from a change in demand?"
+        }
+      },
+      {
+        n:8, title:"Size of the Economy", category:"economics", color:"gold",
+        deck:"Unit_8_Size_of_Economy_Lecture.pptx",
+        topic:"GDP · real and nominal values · GDP per capita · business cycles · phrasal verbs",
+        outcome:"Calculate GDP per capita and explain one limitation of GDP.",
+        application:{
+          title:"GDP comparison and context clues", time:"15–18 minutes", grouping:"Pairs",
+          challenge:"Country A reports GDP of 600 billion units and a population of 30 million. Country B reports GDP of 480 billion and a population of 12 million.",
+          steps:["Calculate GDP per capita for each country and compare the results.","Explain why a rise in nominal GDP may not represent a rise in real output.","Name two dimensions of well-being that GDP does not directly measure.","Use two phrasal verbs from the unit in context, such as add up, go up, or fall off."],
+          deliverable:"A calculation, a two-sentence comparison, and two correctly used phrasal verbs.",
+          reflection:"Why can total GDP alone give a misleading comparison of living standards?"
+        }
+      },
+      {
+        n:9, title:"Management", category:"management", color:"blue",
+        deck:"Unit_9_Management_Lecture.pptx",
+        topic:"Management levels · everyday supervision · strategic goals · modal verbs",
+        outcome:"Assign responsibilities across management levels.",
+        application:{
+          title:"Escalate a service-quality problem", time:"15 minutes", grouping:"Small groups",
+          challenge:"Customers report repeated delivery delays. Front-line staff know the immediate cause, but the department has not met its quarterly target.",
+          steps:["Assign an immediate response to a low-level/front-line manager.","Describe how a middle manager should communicate the issue and coordinate the response.","Identify what senior management may need to decide if company-wide policy or resources are involved.","Make three recommendations using must, should, and can."],
+          deliverable:"A three-level responsibility plan with one modal-verb recommendation for each level.",
+          reflection:"Why should a strategic decision not automatically be assigned to a front-line supervisor?"
+        }
+      },
+      {
+        n:10, title:"Management Concepts and Styles", category:"management", color:"teal",
+        deck:"Unit_10_Management_Concepts_and_Styles_Lecture.pptx",
+        topic:"Control · planning · staffing · persuasive, democratic, and laissez-faire management · conditionals",
+        outcome:"Select a management approach and predict its likely effects.",
+        application:{
+          title:"Choose a leadership style for a project", time:"18–20 minutes", grouping:"Small groups",
+          challenge:"A skilled design team must create a new campaign quickly. The deadline is fixed, but members have different specialist knowledge.",
+          steps:["Select persuasive, democratic, laissez-faire, or a thoughtful blend.","Name one control measure, one planning action, and one staffing or training need.","State one benefit and one risk of your approach.","Write two conditional sentences, for example: “If the team shares ideas, the manager will…”. Use the correct conditional pattern."],
+          deliverable:"A management recommendation with a rationale, an action from each function, and two conditional sentences.",
+          reflection:"What would make a democratic process too slow for this situation?"
+        }
+      },
+      {
+        n:11, title:"Five Basic Parts of an Organization", category:"management", color:"coral",
+        deck:"Unit_11_Five_Basic_Parts_of_an_Organization_Lecture.pptx",
+        topic:"Strategic apex · middle line · operating core · analysts · support staff · relative clauses",
+        outcome:"Map organizational roles and describe them using relative clauses.",
+        application:{
+          title:"Map the people behind a university service", time:"18 minutes", grouping:"Teams of 3–4",
+          challenge:"A university library provides lending, digital access, technical support, and study spaces.",
+          steps:["Place the library director, section coordinators, librarians, process analysts, and IT/support staff in the five-part model.","Choose one coordinating mechanism: mutual adjustment, direct supervision, or standardization.","Explain whether a staff role is enlarged (more tasks) or enriched (more control).","Write two definitions using relative clauses, such as “The operating core consists of staff who…”."],
+          deliverable:"A labelled organization map, one coordination choice, and two relative-clause descriptions.",
+          reflection:"When might standardization improve reliability—and when could it limit flexibility?"
+        }
+      },
+      {
+        n:12, title:"Organizational Culture", category:"management", color:"gold",
+        deck:"Unit_12_Organizational_Culture_Lecture.pptx",
+        topic:"Shared values · assumptions · culture strength · organizational behavior · perfect tenses",
+        outcome:"Compare stated values with behavioral evidence of culture.",
+        application:{
+          title:"Culture audit: values versus daily practice", time:"18 minutes", grouping:"Small groups",
+          challenge:"A technology company says it values learning and cooperation. New employees report little training, and teams rarely share information.",
+          steps:["Identify the stated cultural values and the observed behaviors in the scenario.","List two kinds of evidence you would collect to assess culture content and culture strength.","Recommend one practical change that better aligns behavior with the stated values.","Write one present-perfect sentence about a change relevant now and one past-perfect sentence about an earlier event."],
+          deliverable:"A short culture diagnosis, two evidence sources, one recommendation, and two perfect-tense sentences.",
+          reflection:"Why are routines and rewards often more revealing than slogans?"
+        }
+      },
+      {
+        n:13, title:"The Banking Industry", category:"finance", color:"blue",
+        deck:"Unit_13_Banking_Industry_Lecture.pptx",
+        topic:"Commercial and investment banks · deposits · lending · collateral · risk and liquidity",
+        outcome:"Assess a loan scenario and explain core banking terms.",
+        application:{
+          title:"Loan committee: balance risk and return", time:"18–20 minutes", grouping:"Small groups",
+          challenge:"A local business requests a loan to purchase equipment. Its income varies seasonally, and it offers a building as collateral.",
+          steps:["Identify what the bank should assess about the business’s income, solvency, and credit standing.","Explain the role of collateral and one reason the bank must consider liquidity.","Compare commercial/retail and investment-bank services relevant to the case.","Report what the borrower has provided and what the bank had reviewed before reaching a decision (use perfect tenses)."],
+          deliverable:"A short lending recommendation using deposits, collateral, liquidity, solvency, and an appropriate perfect tense.",
+          reflection:"Does collateral remove all lending risk? Explain."
+        }
+      },
+      {
+        n:14, title:"Marketing", category:"business", color:"teal",
+        deck:"Unit_14_Marketing_Lecture.pptx",
+        topic:"Customer needs · target markets · marketing mix · segmentation · market research",
+        outcome:"Build a basic marketing mix and express the purpose of decisions.",
+        application:{
+          title:"Design a campus marketing mix", time:"18–20 minutes", grouping:"Teams of 3–4",
+          challenge:"Create a campaign for an affordable campus meal plan aimed at first-year students.",
+          steps:["Define a target segment and one need the service should satisfy.","Choose a product, price, place, and promotion decision; consider packaging if relevant.","Suggest one piece of market research that would reduce guesswork.","Write two purpose statements using to + base verb, such as “We will survey students to identify…”."],
+          deliverable:"A one-page 4Ps mini-plan, one research question, and two infinitives-of-purpose sentences.",
+          reflection:"How does a marketing-oriented approach differ from simply trying to sell an existing product?"
+        }
+      }
+    ];
+
+    // Answers are stored separately from prompts and choices so students can attempt each task first.
+    const interactiveActivities = {
+      1: {
+        fill:{prompt:"Complete the sentence with one precise academic verb.", sentence:"Academic writing uses precise vocabulary to ___ meaning.", answers:["communicate"]},
+        mcq:{prompt:"Which verb is the most precise formal alternative in this sentence: “Participants ___ information about the study”?", options:["got","received","made"], answer:1},
+        order:{prompt:"Arrange the stages of a clear academic paragraph.", items:["Explain how the evidence supports the claim.","State the main claim.","Link the point to the wider argument.","Add evidence or an example."], answer:["State the main claim.","Add evidence or an example.","Explain how the evidence supports the claim.","Link the point to the wider argument."]}
+      },
+      2: {
+        fill:{prompt:"Complete the sentence with the correct university term.", sentence:"A student’s main field of study is an academic ___.", answers:["discipline"]},
+        mcq:{prompt:"Which unit is normally broader in a university structure?", options:["A department","A faculty","A single course"], answer:1},
+        order:{prompt:"Arrange the academic structure from broadest to most specific.", items:["Department","Discipline","University","Faculty"], answer:["University","Faculty","Department","Discipline"]}
+      },
+      3: {
+        fill:{prompt:"Complete the definition with the correct term.", sentence:"A person who buys a product or service is a ___.", answers:["customer"]},
+        mcq:{prompt:"Which term commonly describes a company that provides a particular professional service?", options:["Firm","Consumer","Industry"], answer:0},
+        order:{prompt:"Arrange these actions into a sensible customer-focused business process.", items:["The business selects a product or service to offer.","The business identifies customer needs.","The business reviews the customer experience.","The business plans how to reach its target location or market."], answer:["The business identifies customer needs.","The business selects a product or service to offer.","The business plans how to reach its target location or market.","The business reviews the customer experience."]}
+      },
+      4: {
+        fill:{prompt:"Use the correct word form.", sentence:"Banks provide ___ services to individuals and businesses.", answers:["financial"]},
+        mcq:{prompt:"A company earns 8,000 dinars and spends 5,500 dinars. What is the result before other costs?", options:["A profit of 2,500 dinars","A loss of 2,500 dinars","A profit of 13,500 dinars"], answer:0},
+        order:{prompt:"Arrange the calculation steps for GDP per person.", items:["Divide the country’s total GDP by its population.","Identify the country’s total GDP.","State GDP per person.","Identify the population."], answer:["Identify the country’s total GDP.","Identify the population.","Divide the country’s total GDP by its population.","State GDP per person."]}
+      },
+      5: {
+        fill:{prompt:"Complete the definition.", sentence:"The next best alternative given up when making a choice is its opportunity ___.", answers:["cost"]},
+        mcq:{prompt:"What does microeconomics commonly study?", options:["The economy as a whole","The economic behaviour of individual firms and consumers","Only a country’s total population"], answer:1},
+        order:{prompt:"Arrange the logic of an economic choice.", items:["A decision is made between alternatives.","Limited resources cannot satisfy every want.","The next best option given up is the opportunity cost.","Scarcity makes choice necessary."], answer:["Limited resources cannot satisfy every want.","Scarcity makes choice necessary.","A decision is made between alternatives.","The next best option given up is the opportunity cost."]}
+      },
+      6: {
+        fill:{prompt:"Name one core function of money.", sentence:"Money acts as a medium of ___.", answers:["exchange"]},
+        mcq:{prompt:"Fiat money is generally accepted because it is recognized as…", options:["a direct exchange of goods","legal tender and supported by public confidence","a fixed quantity of gold in every transaction"], answer:1},
+        order:{prompt:"Arrange the exchange process in a money economy.", items:["The buyer pays using money accepted by the seller.","The buyer and seller agree on a price.","The buyer receives the good or service.","Money removes the need for a direct coincidence of wants."], answer:["Money removes the need for a direct coincidence of wants.","The buyer and seller agree on a price.","The buyer pays using money accepted by the seller.","The buyer receives the good or service."]}
+      },
+      7: {
+        fill:{prompt:"Complete the law of demand.", sentence:"When the price of a good falls, the quantity ___ generally rises, ceteris paribus.", answers:["demanded"]},
+        mcq:{prompt:"A change in the good’s own price usually causes…", options:["a movement along its demand curve","a shift of the demand curve","a change in the number of sellers"], answer:0},
+        order:{prompt:"Arrange the demand explanation for a price decrease.", items:["The price of the good decreases.","Consumers move along the demand curve.","The quantity demanded increases, other things equal.","The demand curve itself has not shifted."], answer:["The price of the good decreases.","Consumers move along the demand curve.","The quantity demanded increases, other things equal.","The demand curve itself has not shifted."]}
+      },
+      8: {
+        fill:{prompt:"Complete the GDP definition.", sentence:"GDP counts the value of ___ goods and services produced within a country.", answers:["final"]},
+        mcq:{prompt:"Real GDP adjusts output values for…", options:["changes in prices or inflation","changes in the national border","the number of firms only"], answer:0},
+        order:{prompt:"Arrange the GDP-per-capita calculation.", items:["Divide GDP by the population.","Find the country’s GDP.","Interpret the result as output per person.","Find the population."], answer:["Find the country’s GDP.","Find the population.","Divide GDP by the population.","Interpret the result as output per person."]}
+      },
+      9: {
+        fill:{prompt:"Complete the management hierarchy statement.", sentence:"___ management communicates strategic goals to front-line managers.", answers:["Middle"]},
+        mcq:{prompt:"Which sentence uses a modal verb correctly?", options:["Managers must to communicate goals.","Managers must communicate goals.","Managers must communicates goals."], answer:1},
+        order:{prompt:"Arrange the levels from strategic direction to everyday supervision.", items:["Front-line managers supervise daily work.","Senior management sets the overall direction.","Middle management communicates and coordinates plans."], answer:["Senior management sets the overall direction.","Middle management communicates and coordinates plans.","Front-line managers supervise daily work."]}
+      },
+      10: {
+        fill:{prompt:"Complete the management principle.", sentence:"Planning continues during strategy ___.", answers:["implementation"]},
+        mcq:{prompt:"Which management style directly invites employees to participate in decision-making?", options:["Democratic","Laissez-faire only","Directive"], answer:0},
+        order:{prompt:"Arrange a basic planning-and-review cycle.", items:["Review progress and adjust the plan.","Set clear objectives.","Implement the planned actions.","Choose actions and assign responsibilities."], answer:["Set clear objectives.","Choose actions and assign responsibilities.","Implement the planned actions.","Review progress and adjust the plan."]}
+      },
+      11: {
+        fill:{prompt:"Complete the organizational definition.", sentence:"The operating ___ performs an organization’s basic work.", answers:["core"]},
+        mcq:{prompt:"Which organizational part commonly standardizes work processes, outputs, or skills?", options:["The operating core","The technostructure / analysts","The customer group"], answer:1},
+        order:{prompt:"Arrange these stages as an organization grows and adds coordination.", items:["Analysts introduce standardization of processes, outputs, or skills.","Operators coordinate basic work through mutual adjustment.","Managers may introduce direct supervision."], answer:["Operators coordinate basic work through mutual adjustment.","Managers may introduce direct supervision.","Analysts introduce standardization of processes, outputs, or skills."]}
+      },
+      12: {
+        fill:{prompt:"Complete the present-perfect sentence.", sentence:"The organization ___ developed a stronger learning culture over time.", answers:["has"]},
+        mcq:{prompt:"Which statement best describes culture strength?", options:["How widely and intensely shared assumptions are enacted","The total number of products a company sells","The length of the organization’s name"], answer:0},
+        order:{prompt:"Arrange the culture-to-behaviour relationship.", items:["Repeated behaviors reinforce shared assumptions.","The organization shares values and assumptions.","Shared assumptions influence everyday decisions.","Everyday decisions create recognizable behavior patterns."], answer:["The organization shares values and assumptions.","Shared assumptions influence everyday decisions.","Everyday decisions create recognizable behavior patterns.","Repeated behaviors reinforce shared assumptions."]}
+      },
+      13: {
+        fill:{prompt:"Complete the banking definition.", sentence:"An asset pledged to secure a loan is called ___.", answers:["collateral"]},
+        mcq:{prompt:"A currency held in a bank outside its country of origin is called…", options:["collateral","Eurocurrency","a discount rate"], answer:1},
+        order:{prompt:"Arrange a simplified bank-loan process.", items:["The borrower repays the loan under the agreed terms.","The bank assesses income, credit standing, and security.","The borrower applies for a loan.","The bank agrees terms and transfers funds."], answer:["The borrower applies for a loan.","The bank assesses income, credit standing, and security.","The bank agrees terms and transfers funds.","The borrower repays the loan under the agreed terms."]}
+      },
+      14: {
+        fill:{prompt:"Complete the marketing term.", sentence:"The group of consumers a product is designed for is its target ___.", answers:["market"]},
+        mcq:{prompt:"Which option is NOT one of the traditional four Ps of the marketing mix?", options:["Product","Price","People"], answer:2},
+        order:{prompt:"Arrange a customer-focused marketing process.", items:["Design a suitable product, price, place, and promotion mix.","Identify and research customer needs.","Evaluate customer responses and improve the offer.","Select a target market."], answer:["Identify and research customer needs.","Select a target market.","Design a suitable product, price, place, and promotion mix.","Evaluate customer responses and improve the offer."]}
+      }
+    };
+    Object.assign(interactiveActivities, window.extendedActivities || {});
+
+    const categoryNames = {
+      foundations:"Academic foundations", economics:"Economics and markets",
+      management:"Management and organizations", finance:"Finance and banking",
+      business:"Business and marketing"
+    };
+    const progressKey = "academicEnglishHub.completed.v1";
+    const grid = document.getElementById("lectureGrid");
+    const searchInput = document.getElementById("searchInput");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const sortFilter = document.getElementById("sortFilter");
+    const emptyState = document.getElementById("emptyState");
+    const dialog = document.getElementById("applicationDialog");
+    const modalContent = document.getElementById("modalContent");
+    let activeLecture = null;
+    let completed = loadProgress();
+
+    function loadProgress() {
+      try {
+        const value = JSON.parse(localStorage.getItem(progressKey) || "[]");
+        return new Set(Array.isArray(value) ? value.filter(Number.isInteger) : []);
+      } catch {
+        return new Set();
+      }
+    }
+    function saveProgress() {
+      try { localStorage.setItem(progressKey, JSON.stringify([...completed])); }
+      catch { /* Progress remains available for the current page session. */ }
+    }
+    function esc(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+      })[ch]);
+    }
+    function render() {
+      const query = searchInput.value.trim().toLowerCase();
+      const category = categoryFilter.value;
+      const sort = sortFilter.value;
+      let visible = lectures.filter(item => {
+        const haystack = [item.title, item.topic, item.outcome, item.application.title, categoryNames[item.category]].join(" ").toLowerCase();
+        return (!query || haystack.includes(query)) && (category === "all" || item.category === category);
+      });
+      if (sort === "title") visible.sort((a,b) => a.title.localeCompare(b.title));
+      else if (sort === "progress") visible.sort((a,b) => Number(completed.has(a.n))-Number(completed.has(b.n)) || a.n-b.n);
+      else visible.sort((a,b) => a.n-b.n);
+      grid.innerHTML = visible.map(item => `
+        <article class="lecture-card ${completed.has(item.n) ? "is-done" : ""}" style="--accent:var(--${item.color})">
+          <div class="card-top"></div>
+          <div class="card-body">
+            <div class="card-kicker"><span class="lecture-no">LECTURE ${String(item.n).padStart(2,"0")}</span><span>${esc(categoryNames[item.category])}</span><span class="done-badge">✓ Applied</span></div>
+            <h3>${esc(item.title)}</h3>
+            <p class="topic">${esc(item.topic)}</p>
+            <div class="outcome"><b>Application outcome:</b> ${esc(item.outcome)}<br><b>Practice:</b> 5 fill-ins · 5 multiple choice · 5 sentence-order questions</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn btn-primary" type="button" data-study="${item.n}">Study unit</button>
+            <button class="btn btn-light" type="button" data-app="${item.n}">Application</button>
+          </div>
+        </article>`).join("");
+      emptyState.style.display = visible.length ? "none" : "block";
+      document.getElementById("completedCount").textContent = `${completed.size} / 14`;
+    }
+    function exerciseShell(lectureNumber, type, questionIndex, title, prompt, content) {
+      return `
+        <section class="exercise-card" data-exercise-card data-lecture="${lectureNumber}" data-type="${type}" data-question="${questionIndex}">
+          <div class="exercise-head"><h4>${title}</h4><span class="exercise-tag">${type === "fill" ? "Fill in the blank" : type === "mcq" ? "Multiple choice" : "Sentence order"}</span></div>
+          <p class="exercise-prompt">${esc(prompt)}</p>
+          ${content}
+          <div class="exercise-actions">
+            <button class="btn btn-light" type="button" data-check-exercise>Check my answer</button>
+            <span class="exercise-feedback" data-exercise-feedback role="status" aria-live="polite"></span>
+          </div>
+          <div class="answer-reveal" data-answer-reveal hidden></div>
+        </section>`;
+    }
+    function renderExercises(lectureNumber) {
+      const set = interactiveActivities[lectureNumber];
+      if (!set) return "";
+      const fillMarkup = set.fill.map((exercise, questionIndex) => {
+        const parts = exercise.sentence.split("___");
+        return exerciseShell(
+          lectureNumber, "fill", questionIndex, `Fill-in-the-blank ${questionIndex + 1}`, exercise.prompt,
+          `<p class="fill-sentence">${esc(parts[0])}<input class="fill-input" type="text" data-fill-answer aria-label="Your answer for fill-in-the-blank ${questionIndex + 1}" autocomplete="off">${esc(parts[1] || "")}</p>`
+        );
+      }).join("");
+      const mcqMarkup = set.mcq.map((exercise, questionIndex) => exerciseShell(
+        lectureNumber, "mcq", questionIndex, `Multiple-choice question ${questionIndex + 1}`, exercise.prompt,
+        `<div class="mcq-options">${exercise.options.map((option, optionIndex) => `
+          <label class="mcq-option"><input type="radio" name="mcq-${lectureNumber}-${questionIndex}" value="${optionIndex}" data-mcq-answer><span>${esc(option)}</span></label>
+        `).join("")}</div>`
+      )).join("");
+      const orderMarkup = set.order.map((exercise, questionIndex) => {
+        const displayedItems = [...exercise.items];
+        if (displayedItems.every((item, index) => item === exercise.answer[index])) displayedItems.reverse();
+        return exerciseShell(
+        lectureNumber, "order", questionIndex, `Sentence-order question ${questionIndex + 1}`, exercise.prompt,
+        `<ol class="order-list" data-order-list>${displayedItems.map((item, itemIndex) => `
+          <li class="order-item" data-order-item>
+            <p>${esc(item)}</p>
+            <span class="order-controls">
+              <button type="button" data-order-move="-1" aria-label="Move sentence up" ${itemIndex === 0 ? "disabled" : ""}>↑</button>
+              <button type="button" data-order-move="1" aria-label="Move sentence down" ${itemIndex === displayedItems.length - 1 ? "disabled" : ""}>↓</button>
+            </span>
+          </li>
+        `).join("")}</ol>`
+      );
+      }).join("");
+      return `<div class="practice-set">
+        <h3>Interactive practice</h3>
+        <p class="practice-intro">Each lecture has five questions in each English exercise type. Correct answers remain hidden until the student submits an attempt.</p>
+        <details class="activity-group" open><summary>Fill in the blank · ${set.fill.length} questions</summary><div class="activity-group-body">${fillMarkup}</div></details>
+        <details class="activity-group"><summary>Multiple choice · ${set.mcq.length} questions</summary><div class="activity-group-body">${mcqMarkup}</div></details>
+        <details class="activity-group"><summary>Put the sentences in order · ${set.order.length} questions</summary><div class="activity-group-body">${orderMarkup}</div></details>
+      </div>`;
+    }
+    function renderLectureContent(lectureNumber) {
+      const slides = window.lectureContent[lectureNumber];
+      if (!Array.isArray(slides) || !slides.length) {
+        throw new Error(`Lecture text is missing for unit ${lectureNumber}.`);
+      }
+      return `<div class="lesson-content"><div class="slide-list">${slides.map(slide => `
+        <article class="slide-card">
+          <h4>Slide ${slide.number}</h4>
+          ${slide.paragraphs.map(paragraph => `<p>${esc(paragraph)}</p>`).join("")}
+        </article>`).join("")}</div></div>`;
+    }
+    function openApplication(n, mode = "practice") {
+      activeLecture = lectures.find(item => item.n === n);
+      if (!activeLecture) return;
+      if (!Array.isArray(window.lectureContent[n]) || !window.lectureContent[n].length) {
+        throw new Error(`Lecture text is missing for unit ${n}.`);
+      }
+      const app = activeLecture.application;
+      document.getElementById("modalEyebrow").textContent = `LECTURE ${String(activeLecture.n).padStart(2,"0")} · ${categoryNames[activeLecture.category].toUpperCase()}`;
+      document.getElementById("modalTitle").textContent = mode === "study" ? activeLecture.title : app.title;
+      modalContent.innerHTML = `
+        <div class="app-meta"><span>${esc(app.time)}</span><span>${esc(app.grouping)}</span><span>${esc(activeLecture.title)}</span></div>
+        <details class="activity-group" ${mode === "study" ? "open" : ""}>
+          <summary>Lecture text · ${window.lectureContent[n].length} slides</summary>
+          <div class="activity-group-body">${renderLectureContent(n)}</div>
+        </details>
+        <details class="activity-group" ${mode === "practice" ? "open" : ""}>
+          <summary>Application and interactive practice</summary>
+          <div class="activity-group-body">
+            <div class="challenge"><b>Scenario</b>${esc(app.challenge)}</div>
+            <h3>Application steps</h3>
+            <ol>${app.steps.map(step => `<li>${esc(step)}</li>`).join("")}</ol>
+            ${renderExercises(activeLecture.n)}
+            <div class="deliverable"><b>Expected output</b><br>${esc(app.deliverable)}</div>
+            <p class="reflection">${esc(app.reflection)}</p>
+          </div>
+        </details>
+        <div class="modal-actions">
+          <button class="btn ${completed.has(activeLecture.n) ? "btn-light" : "btn-gold"}" id="toggleDone" type="button">${completed.has(activeLecture.n) ? "✓ Marked complete" : "Mark application complete"}</button>
+        </div>`;
+      dialog.showModal();
+      document.getElementById("toggleDone").addEventListener("click", () => {
+        if (completed.has(activeLecture.n)) completed.delete(activeLecture.n);
+        else completed.add(activeLecture.n);
+        saveProgress();
+        render();
+        openApplication(activeLecture.n);
+      });
+    }
+    function normalizeAnswer(value) {
+      return value.trim().toLowerCase().replace(/[.,!?;:]+$/g, "");
+    }
+    function updateOrderControls(list) {
+      const items = [...list.querySelectorAll("[data-order-item]")];
+      items.forEach((item, index) => {
+        const buttons = item.querySelectorAll("[data-order-move]");
+        buttons[0].disabled = index === 0;
+        buttons[1].disabled = index === items.length - 1;
+      });
+    }
+    function revealExerciseResult(card, isCorrect, answerText) {
+      const feedback = card.querySelector("[data-exercise-feedback]");
+      feedback.textContent = isCorrect ? "Correct — well done." : "Good try. Review the answer, then try explaining why.";
+      feedback.classList.toggle("is-correct", isCorrect);
+      feedback.classList.toggle("is-incorrect", !isCorrect);
+      const answer = card.querySelector("[data-answer-reveal]");
+      answer.textContent = `Correct answer: ${answerText}`;
+      answer.hidden = false;
+    }
+    modalContent.addEventListener("click", event => {
+      const moveButton = event.target.closest("[data-order-move]");
+      if (moveButton) {
+        const item = moveButton.closest("[data-order-item]");
+        const list = item.closest("[data-order-list]");
+        const direction = Number(moveButton.dataset.orderMove);
+        if (direction < 0 && item.previousElementSibling) list.insertBefore(item, item.previousElementSibling);
+        if (direction > 0 && item.nextElementSibling) list.insertBefore(item.nextElementSibling, item);
+        updateOrderControls(list);
+        const card = item.closest("[data-exercise-card]");
+        card.querySelector("[data-answer-reveal]").hidden = true;
+        card.querySelector("[data-exercise-feedback]").textContent = "";
+        return;
+      }
+      const checkButton = event.target.closest("[data-check-exercise]");
+      if (!checkButton) return;
+      const card = checkButton.closest("[data-exercise-card]");
+      const lectureNumber = Number(card.dataset.lecture);
+      const type = card.dataset.type;
+      const questionIndex = Number(card.dataset.question);
+      const activity = interactiveActivities[lectureNumber][type][questionIndex];
+      let correct = false;
+      let answerText = "";
+      if (type === "fill") {
+        const input = card.querySelector("[data-fill-answer]");
+        const attempt = normalizeAnswer(input.value);
+        if (!attempt) {
+          card.querySelector("[data-exercise-feedback]").textContent = "Enter your answer before checking.";
+          card.querySelector("[data-answer-reveal]").hidden = true;
+          return;
+        }
+        correct = normalizeAnswer(activity.answer).split("/").some(answer => normalizeAnswer(answer) === attempt);
+        answerText = activity.answer;
+      } else if (type === "mcq") {
+        const selected = card.querySelector("[data-mcq-answer]:checked");
+        if (!selected) {
+          card.querySelector("[data-exercise-feedback]").textContent = "Choose an option before checking.";
+          card.querySelector("[data-answer-reveal]").hidden = true;
+          return;
+        }
+        const selectedIndex = Number(selected.value);
+        correct = selectedIndex === activity.answer;
+        answerText = activity.options[activity.answer];
+      } else {
+        const list = card.querySelector("[data-order-list]");
+        const attempt = [...list.querySelectorAll("[data-order-item] p")].map(item => item.textContent);
+        correct = attempt.length === activity.answer.length && attempt.every((item, index) => item === activity.answer[index]);
+        answerText = activity.answer.join(" → ");
+      }
+      revealExerciseResult(card, correct, answerText);
+    });
+    grid.addEventListener("click", event => {
+      const studyButton = event.target.closest("[data-study]");
+      if (studyButton) {
+        openApplication(Number(studyButton.dataset.study), "study");
+        return;
+      }
+      const button = event.target.closest("[data-app]");
+      if (button) openApplication(Number(button.dataset.app));
+    });
+    searchInput.addEventListener("input", render);
+    categoryFilter.addEventListener("change", render);
+    sortFilter.addEventListener("change", render);
+    document.getElementById("closeDialog").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", event => {
+      if (event.target === dialog) dialog.close();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && dialog.open) dialog.close();
+    });
+    document.getElementById("resetProgress").addEventListener("click", () => {
+      if (!completed.size || !confirm("Clear all application completion marks on this device?")) return;
+      completed.clear();
+      saveProgress();
+      render();
+    });
+    render();
+  </script>
+</body>
+</html>
