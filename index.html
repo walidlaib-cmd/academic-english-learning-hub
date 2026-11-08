@@ -91,8 +91,9 @@
     .outcome { margin-top:12px; padding-top:11px; border-top:1px solid #edf1f4; font-size:.83rem; color:#485c6d; }
     .outcome b { color:var(--navy); }
     .card-actions { display:flex; gap:8px; padding:0 18px 17px; }
-    .card-actions .btn { padding:9px 11px; font-size:.84rem; flex:1; }
+    .card-actions .btn { padding:10px 11px; font-size:.92rem; flex:1; }
     .card-actions .btn-primary { flex:1.2; }
+    .card-actions [data-study] { font-size:1rem; font-weight:800; letter-spacing:.01em; }
     .empty { display:none; padding:34px; text-align:center; color:var(--muted); background:#fff; border:1px dashed var(--line); border-radius:14px; }
     .method { margin-top:36px; background:linear-gradient(120deg,#fff,#f7fafc); border:1px solid var(--line); border-radius:16px; padding:24px; }
     .method h2 { margin:0 0 5px; color:var(--navy); font-size:1.28rem; }
@@ -101,10 +102,7 @@
     .method-step { background:#fff; border:1px solid var(--line); border-radius:11px; padding:12px; position:relative; }
     .method-step b { color:var(--blue); display:block; font-size:.82rem; margin-bottom:3px; }
     .method-step span { color:#52677a; font-size:.84rem; }
-    .intro { margin-top:24px; background:#fff; border:1px solid var(--line); border-radius:16px; padding:24px; box-shadow:0 5px 18px rgba(20,48,73,.045); }
-    .intro h2, .source-library h2 { margin:0 0 8px; color:var(--navy); font-size:1.35rem; }
-    .intro p { color:#52677a; margin:9px 0; }
-    .definition { border-left:4px solid var(--gold); background:#fff8e8; padding:13px 15px; border-radius:8px; color:var(--navy)!important; }
+    .source-library h2 { margin:0 0 8px; color:var(--navy); font-size:1.35rem; }
     .source-library { margin-top:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:linear-gradient(120deg,#173e5c,#155d69); color:#fff; border-radius:16px; padding:24px; }
     .source-library h2 { color:#fff; }
     .source-library p { margin:0; color:#d8e5ee; max-width:700px; }
@@ -112,9 +110,13 @@
     .lesson-content h3 { margin:0 0 10px; }
     .slide-list { display:grid; gap:10px; }
     .slide-card { padding:13px 15px; border:1px solid var(--line); border-radius:10px; background:#fff; }
-    .slide-card h4 { margin:0 0 7px; color:var(--blue); font-size:.86rem; text-transform:uppercase; letter-spacing:.05em; }
+    .slide-card h4 { margin:0 0 7px; color:var(--blue); font-size:.96rem; }
     .slide-card p { margin:5px 0; white-space:pre-wrap; }
-    .pdf-text { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font:.86rem/1.5 "Cascadia Mono",Consolas,"Courier New",monospace; color:#24374a; }
+    .pdf-text { margin:0; white-space:pre-wrap; overflow-wrap:anywhere; font:1.08rem/1.8 "Segoe UI",Aptos,Arial,sans-serif; color:#24374a; }
+    .glossary-ref { border:0; padding:0 2px; color:#176b91; background:transparent; font:inherit; font-size:.78em; font-weight:800; line-height:1; vertical-align:super; cursor:pointer; text-decoration:underline dotted; text-underline-offset:2px; }
+    .glossary-ref:hover,.glossary-ref:focus-visible { color:#104663; background:#e9f4f8; border-radius:3px; outline:2px solid rgba(40,117,163,.25); }
+    .glossary-meaning { margin:0 0 10px; padding:11px 13px; border-left:4px solid var(--gold); border-radius:8px; background:#fff8e8; color:var(--navy); font-size:.98rem; line-height:1.65; }
+    .glossary-meaning[hidden] { display:none; }
     .foot { color:var(--muted); text-align:center; padding:29px 0 5px; font-size:.84rem; }
     dialog { border:0; padding:0; width:min(760px, calc(100% - 28px)); max-height:min(88vh,900px); border-radius:18px; color:var(--ink); box-shadow:0 24px 80px rgba(5,24,43,.35); }
     dialog[open] { display:flex; flex-direction:column; }
@@ -129,6 +131,24 @@
     .challenge { border-left:4px solid var(--gold); background:#fff8e8; padding:13px 15px; border-radius:8px; margin-bottom:16px; }
     .challenge b { display:block; color:var(--navy); margin-bottom:3px; }
     .modal-content h3 { color:var(--navy); font-size:1rem; margin:17px 0 8px; }
+    .study-summary { background:#f7fafc; border:1px solid var(--line); border-radius:12px; padding:17px; }
+    .study-summary > h3:first-child { margin:0 0 9px; font-size:1.2rem; }
+    .summary-overview { margin:0; color:#334c60; font-size:1.05rem; line-height:1.75; }
+    .study-summary h4 { color:var(--navy); margin:18px 0 9px; font-size:1rem; }
+    .summary-concepts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+    .summary-concept { align-self:start; background:#fff; border:1px solid var(--line); border-radius:9px; }
+    .summary-concept summary { cursor:pointer; padding:11px 12px; color:var(--navy); font-weight:800; font-size:.96rem; }
+    .summary-concept p { margin:0; padding:0 12px 12px; color:#40586b; line-height:1.65; }
+    .summary-check { margin-top:17px; padding:14px; background:#fff; border:1px solid #d8e6ee; border-radius:10px; }
+    .summary-check h4 { margin:0 0 7px; }
+    .summary-question { margin:0 0 10px; color:#334c60; font-weight:650; }
+    .summary-options { display:grid; gap:7px; }
+    .summary-option { display:flex; gap:9px; align-items:flex-start; padding:9px 10px; border:1px solid var(--line); border-radius:8px; cursor:pointer; }
+    .summary-option input { margin-top:5px; accent-color:var(--blue); }
+    .summary-check-actions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:11px; }
+    .summary-check-actions .btn { padding:8px 12px; font-size:.86rem; }
+    .summary-answer { margin-top:9px; padding:10px 12px; border-radius:8px; background:#edf7f4; border:1px solid #d2ebe3; color:#245d54; }
+    .summary-answer[hidden] { display:none; }
     .modal-content ol { padding-left:22px; margin:7px 0 12px; }
     .modal-content li { padding:3px 0 3px 3px; }
     .deliverable { background:#edf7f4; border:1px solid #d2ebe3; border-radius:10px; padding:12px 14px; margin-top:15px; }
@@ -195,7 +215,8 @@
       .order-item { align-items:flex-start; }
       .order-controls { flex-direction:column; }
       .translation-row { grid-template-columns:1fr; }
-      .intro, .source-library { padding:18px; }
+      .source-library { padding:18px; }
+      .summary-concepts { grid-template-columns:1fr; }
     }
     @media print {
       .cover-actions,.filters,.card-actions,.method,.cover-link { display:none!important; }
@@ -224,7 +245,6 @@
         </div>
         <div class="cover-actions">
           <a class="btn btn-gold" href="#lectures">Browse all lectures <span aria-hidden="true">↓</span></a>
-          <a class="btn btn-outline" href="#about">Read the course introduction</a>
         </div>
       </div>
     </div>
@@ -239,18 +259,11 @@
         <div class="stat"><strong>100% online</strong><span>lecture text and source readings built into the site</span></div>
       </section>
 
-      <section class="intro" id="about" aria-labelledby="aboutTitle">
-        <h2 id="aboutTitle">What is Academic English?</h2>
-        <p class="definition"><strong>Definition:</strong> Academic English is the formal, precise, and evidence-based use of English to understand, discuss, and communicate ideas in higher education.</p>
-        <p>This course develops the language skills first-year students need to study Economic, Commercial, and Management Sciences. It connects academic vocabulary, register, grammar, and clear writing with core ideas such as scarcity, opportunity cost, markets, money, national output, management, banking, and marketing.</p>
-        <p>Work through each unit’s complete source text, then use its interactive questions and applied case to explain an idea in your own words. All fourteen unit texts from the supplied PDF are embedded directly in the corresponding study sections.</p>
-      </section>
-
       <section id="lectures" aria-labelledby="lectureHeading">
         <div class="toolbar">
           <div>
             <h2 class="section-title" id="lectureHeading">Lecture index</h2>
-            <p class="section-note">Study the complete PDF unit text, then complete 10 fill-in, 10 multiple-choice, and 10 sentence-order questions plus a module-specific application.</p>
+            <p class="section-note">Review a concise unit summary, explore key ideas, then practise with interactive questions and a module-specific application.</p>
           </div>
           <button class="btn btn-light" id="resetProgress" type="button" title="Clear application completion marks">Reset progress</button>
         </div>
@@ -308,11 +321,12 @@
 
   <script src="course-content.js"></script>
   <script src="pdf-unit-content.js"></script>
+  <script src="unit-summaries.js"></script>
   <script src="activity-bank.js"></script>
   <script src="activity-expansion.js"></script>
   <script>
-    if (!window.lectureContent || !window.pdfUnitContent) {
-      throw new Error("Course unit text did not load. Check that the course content files are available.");
+    if (!window.lectureContent || !window.pdfUnitContent || !window.unitSummaries) {
+      throw new Error("Course unit content did not load. Check that all course content files are available.");
     }
     const lectures = [
       {
@@ -593,6 +607,7 @@
     const dialog = document.getElementById("applicationDialog");
     const modalContent = document.getElementById("modalContent");
     let activeLecture = null;
+    let activeGlossary = {};
     let completed = loadProgress();
 
     function loadProgress() {
@@ -633,7 +648,7 @@
             <div class="outcome"><b>Application outcome:</b> ${esc(item.outcome)}<br><b>Practice:</b> 10 fill-ins · 10 multiple choice · 10 sentence-order questions</div>
           </div>
           <div class="card-actions">
-            <button class="btn btn-primary" type="button" data-study="${item.n}">Study unit</button>
+            <button class="btn btn-primary" type="button" data-study="${item.n}" aria-label="Study unit ${item.n}: ${esc(item.title)}">STUDY UNIT</button>
             <button class="btn btn-light" type="button" data-app="${item.n}">Application</button>
           </div>
         </article>`).join("");
@@ -693,28 +708,225 @@
         <details class="activity-group"><summary>Put the sentences in order · ${set.order.length} questions</summary><div class="activity-group-body">${orderMarkup}</div></details>
       </div>`;
     }
+    function findGlossaryAnchors(line) {
+      const anchors = [];
+      const pattern = /([ \t]*)(\d{1,2})[.]?[ \t]*(?=[A-Za-z])/g;
+      for (const match of line.matchAll(pattern)) {
+        const prefix = match[1];
+        if (match.index !== 0 && prefix.length < 2) continue;
+        anchors.push({
+          number:Number(match[2]),
+          start:match.index + prefix.length,
+          end:match.index + match[0].length
+        });
+      }
+      return anchors;
+    }
+    function isGlossaryStop(line) {
+      const value = line.trim();
+      return /^(?:[A-D]\s*[.)-]\s*(?:Based|Select|Choose|Find|Fill|Match|Complete|Translate|Using|Fair Work|Enhancing)|Digest what you read\b|Vocabulary Loading\b|Grammar Injection\b|Grammar injection\b|Self-check\b|Exercises?\b|Practice:\s*$)/i.test(value) ||
+        /^\d{1,2}\s*[.)-]\s*(?:What|Which|Who|Why|How|Complete|Fill|Select|Name|Define|Explain|Choose)\b/i.test(value);
+    }
+    function splitGlossaryEntry(raw) {
+      const normalized = raw.replace(/\s+/g, " ").trim();
+      const spaced = raw.match(/^(.+?)\s{2,}(.+)$/s);
+      if (spaced) return {
+        term:spaced[1].trim().replace(/[:.]+$/, ""),
+        meaning:spaced[2].replace(/\s+/g, " ").trim()
+      };
+      const definitionStart = normalized.search(/\s+(?=(?:The|A|An|Those|Individuals|Activities|Assets|Workers|Watching|Information|Specific|Top-level|Compelled|Guidelines|Businesses|Sums|Refers|Used|Based|Relating|Expresses|In a way|A Latin|A mutual|A method|A particular|The set|The structure|The highest|The core|The financial|The management|The minimum|An asset|Any currency|Methods used|The ability|The feeling)\b)/);
+      if (definitionStart > 0) {
+        return {
+          term:normalized.slice(0, definitionStart).trim().replace(/[:.]+$/, ""),
+          meaning:normalized.slice(definitionStart).trim()
+        };
+      }
+      return {term:"", meaning:normalized};
+    }
+    function prepareUnitReading(pages) {
+      let inGlossary = false;
+      let foundTable = false;
+      let glossaryStart = null;
+      const linesByPage = pages.map(page => page.text.split(/\r?\n/));
+      for (let pageIndex = 0; pageIndex < linesByPage.length; pageIndex++) {
+        const lines = linesByPage[pageIndex];
+        for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+          if (!/^Glossary\s*$/i.test(lines[lineIndex].trim())) continue;
+          const following = linesByPage.slice(pageIndex).flat().slice(lineIndex + 1, lineIndex + 26);
+          if (following.some(line => findGlossaryAnchors(line).length)) {
+            foundTable = true;
+            glossaryStart = {pageIndex, lineIndex};
+          }
+          break;
+        }
+        if (foundTable) break;
+      }
+      const tableLines = [];
+      const cleanedPages = [];
+      for (let pageIndex = 0; pageIndex < pages.length; pageIndex++) {
+        const cleaned = [];
+        for (let lineIndex = 0; lineIndex < linesByPage[pageIndex].length; lineIndex++) {
+          const line = linesByPage[pageIndex][lineIndex];
+          const trimmed = line.trim();
+          if (foundTable && pageIndex === glossaryStart.pageIndex && lineIndex === glossaryStart.lineIndex) {
+            inGlossary = true;
+            tableLines.push("");
+            continue;
+          }
+          if (inGlossary) {
+            if (isGlossaryStop(line)) {
+              inGlossary = false;
+              cleaned.push({text:line, reference:false});
+              continue;
+            }
+            if (!trimmed || /^Unit\s+\d+\s*:/i.test(trimmed) ||
+                /^No\s+Term\s+Definition$/i.test(trimmed) ||
+                /^Word\s+Definition$/i.test(trimmed) ||
+                /^Glossary$/i.test(trimmed)) {
+              tableLines.push("");
+              continue;
+            }
+            tableLines.push(line);
+            continue;
+          }
+          cleaned.push({
+            text:line,
+            reference:!glossaryStart || pageIndex < glossaryStart.pageIndex ||
+              (pageIndex === glossaryStart.pageIndex && lineIndex < glossaryStart.lineIndex)
+          });
+        }
+        cleanedPages.push(cleaned);
+      }
+      const anchorRows = tableLines.map(line => ({line, anchors:findGlossaryAnchors(line)}));
+      const maxColumns = Math.max(0, ...anchorRows.map(row => row.anchors.length));
+      const referencePoints = anchorRows.find(row => row.anchors.length === maxColumns)?.anchors.map(anchor => anchor.start) || [];
+      const boundaries = [0];
+      for (let index = 1; index < referencePoints.length; index++) {
+        boundaries.push(referencePoints[index]);
+      }
+      boundaries.push(Infinity);
+      const entries = {};
+      const currentByColumn = [];
+      for (const row of anchorRows) {
+        if (row.anchors.length) {
+          for (let itemIndex = 0; itemIndex < row.anchors.length; itemIndex++) {
+            const anchor = row.anchors[itemIndex];
+            let column = itemIndex;
+            if (row.anchors.length !== referencePoints.length) {
+              column = referencePoints.reduce((best, point, candidate) =>
+                Math.abs(point - anchor.start) < Math.abs(referencePoints[best] - anchor.start) ? candidate : best, 0);
+            }
+            const end = row.anchors
+              .filter(other => other.start > anchor.start)
+              .reduce((nearest, other) => Math.min(nearest, other.start), row.line.length);
+            const fragment = row.line.slice(anchor.end, end).trim();
+            if (!fragment) continue;
+            const parsed = splitGlossaryEntry(fragment);
+            entries[anchor.number] = {
+              term:parsed.term.replace(/[:.]+$/, ""),
+              meaning:parsed.meaning.replace(/\ba organ goal\b/gi, "a goal")
+            };
+            currentByColumn[column] = anchor.number;
+          }
+        } else if (row.line.trim()) {
+          for (let column = 0; column < referencePoints.length; column++) {
+            const number = currentByColumn[column];
+            if (!number) continue;
+            const start = Math.floor(boundaries[column]);
+            const end = Math.min(row.line.length, boundaries[column + 1]);
+            const continuation = row.line.slice(start, end).replace(/\s+/g, " ").trim();
+            if (continuation && !/^Unit\s+\d+\s*:/i.test(continuation)) {
+              entries[number].meaning = `${entries[number].meaning} ${continuation}`.trim();
+            }
+          }
+        }
+      }
+      const headerLine = /^(?:Mohamed El Bachir El Ibrahimi University\b|Faculty of Economic, Commercial and Management Sciences\b|First Year\s*[–-]\s*Common Core\b|Subject:\s*English(?:\s*\d+)?\b|Unit\s+\d+\s*:|ENGLISH COURSE\b|ENGLISH [12]\s*[•·])/i;
+      const cleaned = cleanedPages.map(lines => lines.filter(line => {
+        const value = line.text.trim();
+        return value && !headerLine.test(value) && !/^\d{1,2}$/.test(value);
+      }).map(line => ({
+        text:line.text.replace(/[ \t]{2,}/g, " ").replace(/\u0003/g, "'").trim(),
+        reference:line.reference
+      })));
+      return {pages:cleaned, glossary:entries};
+    }
+    function renderGlossaryReferences(text, lectureNumber, glossary) {
+      if (/^\s*(?:\d{1,2}\s*[.)-]\s|[A-D]\s*[.)-]\s|Part\s+\d+\b|Box\s+\d+\b)/i.test(text)) return esc(text);
+      const buttons = [];
+      const reference = number => {
+        if (!glossary[number]) return String(number);
+        const index = buttons.push(
+          `<button class="glossary-ref" type="button" data-glossary-ref="${lectureNumber}:${number}" aria-label="Show glossary meaning for reference ${number}" title="Show glossary meaning">${number}</button>`
+        ) - 1;
+        return `\uE000${index}\uE001`;
+      };
+      const excludedWords = new Set(["than", "more", "least", "over", "under", "about", "approximately", "box", "part", "page", "unit", "number", "question"]);
+      const superscriptDigits = {"⁰":"0","¹":"1","²":"2","³":"3","⁴":"4","⁵":"5","⁶":"6","⁷":"7","⁸":"8","⁹":"9"};
+      let marked = String(text).replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, digits =>
+        reference([...digits].map(digit => superscriptDigits[digit]).join("")));
+      marked = marked.replace(/(\b[\w'-]+\s+)(\d{1,2})(?=\s+[A-Za-z])/g, (match, word, number) =>
+        excludedWords.has(word.trim().toLowerCase()) ? match : word + reference(number));
+      marked = marked.replace(/(\b[\w'-]+)(\d{1,2})\b/g, (match, word, number) =>
+        excludedWords.has(word.toLowerCase()) ? match : word + reference(number));
+      marked = marked.replace(/\[(\d{1,2})\]|\((\d{1,2})\)/g, (match, square, round) => reference(square || round));
+      return esc(marked).replace(/\uE000(\d+)\uE001/g, (match, index) => buttons[Number(index)]);
+    }
     function renderLectureContent(lectureNumber) {
       const slides = window.lectureContent[lectureNumber];
       const pages = window.pdfUnitContent[lectureNumber];
       if (!Array.isArray(slides) || !slides.length || !Array.isArray(pages) || !pages.length) {
         throw new Error(`Complete PDF or slide text is missing for unit ${lectureNumber}.`);
       }
+      const reading = prepareUnitReading(pages);
+      const teachingSlides = slides.filter(slide => slide.number > 2);
+      const cleanSlideText = text => !/^(ENGLISH(?: COURSE| [12])\b|UNIT \d+\s*[•·]|MAP$|BACK$|NEXT$|For clickable navigation\b|LEARN\s*[•·])/i.test(text.trim());
       return `<div class="lesson-content">
-        <h3>Complete unit text from the PDF · ${pages.length} pages</h3>
-        <div class="slide-list">${pages.map(page => `
+        <div class="slide-list">${pages.map((page, index) => ({
+          ...page,
+          text:reading.pages[index].map(line => line.reference
+            ? renderGlossaryReferences(line.text, lectureNumber, reading.glossary)
+            : esc(line.text)).join("\n")
+        })).filter(page => page.text.trim()).map(page => `
           <article class="slide-card">
-            <h4>Source PDF · page ${page.page}</h4>
-            <pre class="pdf-text">${esc(page.text)}</pre>
+            <div class="glossary-meaning" data-glossary-meaning hidden role="status" aria-live="polite"></div>
+            <pre class="pdf-text">${page.text}</pre>
           </article>`).join("")}</div>
         <details class="activity-group">
-          <summary>Presentation slide text · ${slides.length} slides</summary>
-          <div class="activity-group-body slide-list">${slides.map(slide => `
+          <summary>Teaching slide text · ${teachingSlides.length} slides</summary>
+          <div class="activity-group-body slide-list">${teachingSlides.map(slide => `
             <article class="slide-card">
               <h4>Slide ${slide.number}</h4>
-              ${slide.paragraphs.map(paragraph => `<p>${esc(paragraph)}</p>`).join("")}
+              ${slide.paragraphs.filter(cleanSlideText).map(paragraph => `<p>${esc(paragraph)}</p>`).join("")}
             </article>`).join("")}</div>
         </details>
       </div>`;
+    }
+    function renderUnitSummary(lectureNumber) {
+      const summary = window.unitSummaries[lectureNumber];
+      if (!summary) throw new Error(`A concise study summary is missing for unit ${lectureNumber}.`);
+      return `<section class="study-summary" aria-labelledby="unitSummaryTitle">
+        <h3 id="unitSummaryTitle">Unit summary</h3>
+        <p class="summary-overview">${esc(summary.overview)}</p>
+        <h4>Key ideas · select a term to reveal its explanation</h4>
+        <div class="summary-concepts">${summary.concepts.map(concept => `
+          <details class="summary-concept">
+            <summary>${esc(concept.term)}</summary>
+            <p>${esc(concept.meaning)}</p>
+          </details>`).join("")}</div>
+        <section class="summary-check" data-summary-check data-unit="${lectureNumber}" aria-labelledby="summaryCheckTitle">
+          <h4 id="summaryCheckTitle">Quick understanding check</h4>
+          <p class="summary-question">${esc(summary.question)}</p>
+          <div class="summary-options">${summary.options.map((option, index) => `
+            <label class="summary-option"><input type="radio" name="summary-${lectureNumber}" value="${index}" data-summary-option><span>${esc(option)}</span></label>
+          `).join("")}</div>
+          <div class="summary-check-actions">
+            <button class="btn btn-primary" type="button" data-check-summary>Check answer</button>
+            <span class="exercise-feedback" data-summary-feedback role="status" aria-live="polite"></span>
+          </div>
+          <div class="summary-answer" data-summary-answer hidden></div>
+        </section>
+      </section>`;
     }
     function openApplication(n, mode = "practice") {
       activeLecture = lectures.find(item => item.n === n);
@@ -724,12 +936,17 @@
         throw new Error(`Complete PDF or slide text is missing for unit ${n}.`);
       }
       const app = activeLecture.application;
+      activeGlossary = prepareUnitReading(window.pdfUnitContent[n]).glossary;
       document.getElementById("modalEyebrow").textContent = `LECTURE ${String(activeLecture.n).padStart(2,"0")} · ${categoryNames[activeLecture.category].toUpperCase()}`;
       document.getElementById("modalTitle").textContent = mode === "study" ? activeLecture.title : app.title;
       modalContent.innerHTML = `
-        <div class="app-meta"><span>${esc(app.time)}</span><span>${esc(app.grouping)}</span><span>${esc(activeLecture.title)}</span></div>
+        ${mode === "practice" ? `<div class="app-meta"><span>${esc(app.time)}</span><span>${esc(app.grouping)}</span><span>${esc(activeLecture.title)}</span></div>` : ""}
         <details class="activity-group" ${mode === "study" ? "open" : ""}>
-          <summary>Lecture text · ${window.lectureContent[n].length} slides</summary>
+          <summary>STUDY UNIT · summary and quick check</summary>
+          <div class="activity-group-body">${renderUnitSummary(n)}</div>
+        </details>
+        <details class="activity-group">
+          <summary>Detailed reading</summary>
           <div class="activity-group-body">${renderLectureContent(n)}</div>
         </details>
         <details class="activity-group" ${mode === "practice" ? "open" : ""}>
@@ -776,6 +993,39 @@
       answer.hidden = false;
     }
     modalContent.addEventListener("click", event => {
+      const glossaryButton = event.target.closest("[data-glossary-ref]");
+      if (glossaryButton) {
+        const number = Number(glossaryButton.dataset.glossaryRef.split(":")[1]);
+        const entry = activeGlossary[number];
+        if (!entry) return;
+        const panel = glossaryButton.closest(".slide-card").querySelector("[data-glossary-meaning]");
+        panel.textContent = entry.term
+          ? `${entry.term}: ${entry.meaning}`
+          : `Glossary ${number}: ${entry.meaning}`;
+        panel.hidden = false;
+        return;
+      }
+      const summaryButton = event.target.closest("[data-check-summary]");
+      if (summaryButton) {
+        const check = summaryButton.closest("[data-summary-check]");
+        const feedback = check.querySelector("[data-summary-feedback]");
+        const answer = check.querySelector("[data-summary-answer]");
+        const selected = check.querySelector("[data-summary-option]:checked");
+        if (!selected) {
+          feedback.textContent = "Choose an answer before checking.";
+          feedback.classList.remove("is-correct", "is-incorrect");
+          answer.hidden = true;
+          return;
+        }
+        const summary = window.unitSummaries[Number(check.dataset.unit)];
+        const correct = Number(selected.value) === summary.answer;
+        feedback.textContent = correct ? "Correct — you understood the key idea." : "Not quite. Review the key ideas and try to explain the difference.";
+        feedback.classList.toggle("is-correct", correct);
+        feedback.classList.toggle("is-incorrect", !correct);
+        answer.textContent = `Correct answer: ${summary.options[summary.answer]}. ${summary.explanation}`;
+        answer.hidden = false;
+        return;
+      }
       const moveButton = event.target.closest("[data-order-move]");
       if (moveButton) {
         const item = moveButton.closest("[data-order-item]");
