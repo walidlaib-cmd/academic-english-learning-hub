@@ -712,7 +712,7 @@
     }
     function findGlossaryAnchors(line) {
       const anchors = [];
-      const pattern = /([ \t]*)(\d{1,2})[.]?[ \t]*(?=[A-Za-z])/g;
+      const pattern = /([ \t]*)(\d{1,2})[ \t]*\.?(?=[ \t]*[A-Za-z]|[ \t]{2,}\d{1,2}\b|[ \t]*$)/g;
       for (const match of line.matchAll(pattern)) {
         const prefix = match[1];
         if (match.index !== 0 && prefix.length < 2) continue;
@@ -732,10 +732,6 @@
     function splitGlossaryEntry(raw) {
       const normalized = raw.replace(/\s+/g, " ").trim();
       const spaced = raw.match(/^(.+?)\s{2,}(.+)$/s);
-      if (spaced) return {
-        term:spaced[1].trim().replace(/[:.]+$/, ""),
-        meaning:spaced[2].replace(/\s+/g, " ").trim()
-      };
       const definitionStart = normalized.search(/\s+(?=(?:The|A|An|Those|Individuals|Activities|Assets|Workers|Watching|Information|Specific|Top-level|Compelled|Guidelines|Businesses|Sums|Refers|Used|Based|Relating|Expresses|In a way|A Latin|A mutual|A method|A particular|The set|The structure|The highest|The core|The financial|The management|The minimum|An asset|Any currency|Methods used|The ability|The feeling)\b)/);
       if (definitionStart > 0) {
         return {
@@ -743,9 +739,84 @@
           meaning:normalized.slice(definitionStart).trim()
         };
       }
+      if (spaced) return {
+        term:spaced[1].trim().replace(/[:.]+$/, ""),
+        meaning:spaced[2].replace(/\s+/g, " ").trim()
+      };
       return {term:"", meaning:normalized};
     }
-    function prepareUnitReading(pages) {
+    const glossaryCorrections = {
+      5: {
+        11:{term:"",meaning:"Suggests."},
+        28:{term:"",meaning:"Doing something officially agreed."}
+      },
+      6: {
+        10:{term:"",meaning:"A standard unit used as a means of payment."},
+        11:{term:"",meaning:"Goods; supply."},
+        12:{term:"",meaning:"Shopped; purchased."},
+        13:{term:"",meaning:"Artificially; nearly."},
+        14:{term:"",meaning:"Business deals."},
+        15:{term:"",meaning:"Considerably; significantly."},
+        16:{term:"",meaning:"Money that must be accepted as payment."},
+        17:{term:"",meaning:"A stock or supply of a commodity or money not needed for immediate use but available if required."},
+        18:{term:"",meaning:"Money; legal tender."},
+        19:{term:"",meaning:"Supported."},
+        20:{term:"",meaning:"Indicated; made known."},
+        21:{term:"",meaning:"The quantitative relation between two amounts, showing how many times one contains the other."},
+        22:{term:"",meaning:"Valued more than it is."},
+        23:{term:"",meaning:"Unreal; deserted; rejected."},
+        24:{term:"",meaning:"Approximately 28 grams."},
+        25:{term:"",meaning:"During; business; context."},
+        26:{term:"",meaning:"Making the meaning of."},
+        27:{term:"",meaning:"An amount; equal; a set of saying prices."},
+        28:{term:"",meaning:"Producing."},
+        29:{term:"",meaning:"Client; buyers."},
+        30:{term:"",meaning:"The holder or owner of the note."},
+        31:{term:"",meaning:"Bilateral."},
+        32:{term:"",meaning:"Beliefs in honesty and goodness."},
+        33:{term:"",meaning:"Rules."},
+        34:{term:"",meaning:"Lack; scarcity."},
+        35:{term:"",meaning:"Respect; polite behavior."},
+        36:{term:"",meaning:"Stupid; rubbish."},
+        37:{term:"",meaning:"Orders; rules; decisions."},
+        38:{term:"",meaning:"Connected with war and fighting."},
+        39:{term:"",meaning:"Thinking about the past."},
+        40:{term:"",meaning:"Economic reasons."}
+      },
+      9: {
+        1:{term:"Management",meaning:"The coordination and administration of tasks to achieve an organizational goal."},
+        2:{term:"Coordination",meaning:"The organization of different elements or people so they work together effectively."},
+        3:{term:"Administration",meaning:"Activities that include setting strategy and coordinating staff efforts to accomplish objectives."},
+        4:{term:"Strategy",meaning:"A plan of action designed to achieve a long-term or overall aim."},
+        5:{term:"Resources",meaning:"Assets available to an organization, such as financial, natural, technological, and human resources."},
+        6:{term:"Seniority structure",meaning:"The ranking of staff members within an organization based on their level or length of service."},
+        7:{term:"Mission",meaning:"The core purpose, aim, or goal of a company or organization."},
+        8:{term:"Responsibilities",meaning:"Specific tasks or duties that a person is expected or required to do."},
+        9:{term:"Planning",meaning:"The process of making plans for something; a key management skill."},
+        10:{term:"Leadership",meaning:"The action of leading a group of people or an organization."},
+        11:{term:"Hierarchical structure",meaning:"An organizational system where people are ranked one above another according to status or authority."},
+        12:{term:"Low-level management",meaning:"The bottom layer of management responsible for overseeing everyday work (e.g., supervisors)."},
+        13:{term:"Foremen",meaning:"Workers who supervise and direct other workers, typically in a manual trade or factory."},
+        14:{term:"Overseeing",meaning:"Watching and directing the execution of a task or the work of others; supervising."},
+        15:{term:"Feedback",meaning:"Information provided to employees regarding their performance to help them improve."},
+        16:{term:"Middle management",meaning:"The intermediate leadership level responsible for communicating strategic goals to front-line managers."},
+        17:{term:"Department manager",meaning:"A middle manager responsible for a specific division or department within a company."},
+        18:{term:"Strategic goals",meaning:"Long-term objectives defined by senior management for the organization."},
+        19:{term:"Executing",meaning:"Putting a plan, order, or course of action into effect."},
+        20:{term:"Senior management",meaning:"The highest level of managers (e.g., CEO, Board) who set overall goals and direction."},
+        21:{term:"Chief Executive Officer (CEO)",meaning:"The highest-ranking executive in a company."},
+        22:{term:"Board members",meaning:"A group of individuals elected to represent shareholders and govern the organization."},
+        23:{term:"Policy",meaning:"A course or principle of action adopted by the organization."},
+        24:{term:"Shareholders",meaning:"Individuals or entities that own shares (stock) in a company."},
+        25:{term:"Accountable",meaning:"Being responsible and answerable to someone (e.g., to shareholders) for actions and results."},
+        26:{term:"Mobilizing",meaning:"Organizing and encouraging resources or people to act in order to achieve a particular objective."},
+        27:{term:"Academic discipline",meaning:"A branch of knowledge taught and researched at the college or university level."},
+        28:{term:"Public sector",meaning:"The part of an economy that is controlled by the government."},
+        29:{term:"Front-line managers",meaning:"Managers who directly supervise non-management employees; synonymous with low-level managers."},
+        30:{term:"Career planning",meaning:"The process of structuring and managing an employee's professional growth and path."}
+      }
+    };
+    function prepareUnitReading(pages, lectureNumber) {
       let inGlossary = false;
       let foundTable = false;
       let glossaryStart = null;
@@ -754,8 +825,18 @@
         const lines = linesByPage[pageIndex];
         for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
           if (!/^Glossary\s*$/i.test(lines[lineIndex].trim())) continue;
-          const following = linesByPage.slice(pageIndex).flat().slice(lineIndex + 1, lineIndex + 26);
-          if (following.some(line => findGlossaryAnchors(line).length)) {
+          const following = linesByPage.slice(pageIndex).flat().slice(lineIndex + 1);
+          const ignored = /^(?:\d{1,2}|Unit\s+\d+\s*:.*|No\s+Term\s+Definition|Word\s+Definition)$/i;
+          let firstEntry = -1;
+          for (let index = 0; index < Math.min(following.length, 12); index++) {
+            const value = following[index].trim();
+            if (!value || ignored.test(value)) continue;
+            if (findGlossaryAnchors(following[index]).length) firstEntry = index;
+            break;
+          }
+          const hasNextEntry = firstEntry >= 0 &&
+            following.slice(firstEntry + 1, firstEntry + 12).some(line => findGlossaryAnchors(line).length);
+          if (firstEntry >= 0 && hasNextEntry) {
             foundTable = true;
             glossaryStart = {pageIndex, lineIndex};
           }
@@ -781,7 +862,7 @@
               cleaned.push({text:line, reference:false});
               continue;
             }
-            if (!trimmed || /^Unit\s+\d+\s*:/i.test(trimmed) ||
+            if (!trimmed || /^\d{1,2}$/.test(trimmed) || /^Unit\s+\d+\s*:/i.test(trimmed) ||
                 /^No\s+Term\s+Definition$/i.test(trimmed) ||
                 /^Word\s+Definition$/i.test(trimmed) ||
                 /^Glossary$/i.test(trimmed)) {
@@ -801,10 +882,19 @@
       }
       const anchorRows = tableLines.map(line => ({line, anchors:findGlossaryAnchors(line)}));
       const maxColumns = Math.max(0, ...anchorRows.map(row => row.anchors.length));
-      const referencePoints = anchorRows.find(row => row.anchors.length === maxColumns)?.anchors.map(anchor => anchor.start) || [];
+      const columnPositions = Array.from({length:maxColumns}, (_, column) => {
+        const positions = anchorRows
+          .filter(row => row.anchors.length === maxColumns)
+          .map(row => row.anchors[column].start)
+          .sort((a, b) => a - b);
+        const middle = Math.floor(positions.length / 2);
+        return positions.length % 2
+          ? positions[middle]
+          : (positions[middle - 1] + positions[middle]) / 2;
+      });
       const boundaries = [0];
-      for (let index = 1; index < referencePoints.length; index++) {
-        boundaries.push(referencePoints[index]);
+      for (let index = 1; index < columnPositions.length; index++) {
+        boundaries.push(columnPositions[index]);
       }
       boundaries.push(Infinity);
       const entries = {};
@@ -814,29 +904,37 @@
           for (let itemIndex = 0; itemIndex < row.anchors.length; itemIndex++) {
             const anchor = row.anchors[itemIndex];
             let column = itemIndex;
-            if (row.anchors.length !== referencePoints.length) {
-              column = referencePoints.reduce((best, point, candidate) =>
-                Math.abs(point - anchor.start) < Math.abs(referencePoints[best] - anchor.start) ? candidate : best, 0);
+            if (row.anchors.length !== columnPositions.length) {
+              column = columnPositions.reduce((best, point, candidate) =>
+                Math.abs(point - anchor.start) < Math.abs(columnPositions[best] - anchor.start) ? candidate : best, 0);
             }
             const end = row.anchors
               .filter(other => other.start > anchor.start)
               .reduce((nearest, other) => Math.min(nearest, other.start), row.line.length);
             const fragment = row.line.slice(anchor.end, end).trim();
-            if (!fragment) continue;
+            currentByColumn[column] = anchor.number;
+            if (!fragment) {
+              entries[anchor.number] = {term:"", meaning:""};
+              continue;
+            }
             const parsed = splitGlossaryEntry(fragment);
             entries[anchor.number] = {
               term:parsed.term.replace(/[:.]+$/, ""),
               meaning:parsed.meaning.replace(/\ba organ goal\b/gi, "a goal")
             };
-            currentByColumn[column] = anchor.number;
           }
         } else if (row.line.trim()) {
-          for (let column = 0; column < referencePoints.length; column++) {
+          const continuations = Array.from({length:columnPositions.length}, () => []);
+          for (const token of row.line.matchAll(/\S+/g)) {
+            const position = token.index;
+            let column = 0;
+            while (column + 1 < boundaries.length - 1 && position >= boundaries[column + 1]) column++;
+            continuations[column].push(token[0]);
+          }
+          for (let column = 0; column < columnPositions.length; column++) {
             const number = currentByColumn[column];
             if (!number) continue;
-            const start = Math.floor(boundaries[column]);
-            const end = Math.min(row.line.length, boundaries[column + 1]);
-            const continuation = row.line.slice(start, end).replace(/\s+/g, " ").trim();
+            const continuation = continuations[column].join(" ");
             if (continuation && !/^Unit\s+\d+\s*:/i.test(continuation)) {
               entries[number].meaning = `${entries[number].meaning} ${continuation}`.trim();
             }
@@ -851,6 +949,7 @@
         text:line.text.replace(/[ \t]{2,}/g, " ").replace(/\u0003/g, "'").trim(),
         reference:line.reference
       })));
+      Object.assign(entries, glossaryCorrections[lectureNumber] || {});
       return {pages:cleaned, glossary:entries};
     }
     function renderGlossaryReferences(text, lectureNumber, glossary) {
@@ -880,7 +979,7 @@
       if (!Array.isArray(slides) || !slides.length || !Array.isArray(pages) || !pages.length) {
         throw new Error(`Complete PDF or slide text is missing for unit ${lectureNumber}.`);
       }
-      const reading = prepareUnitReading(pages);
+      const reading = prepareUnitReading(pages, lectureNumber);
       const teachingSlides = slides.filter(slide => slide.number > 2);
       const cleanSlideText = text => !/^(ENGLISH(?: COURSE| [12])\b|UNIT \d+\s*[•·]|MAP$|BACK$|NEXT$|For clickable navigation\b|LEARN\s*[•·])/i.test(text.trim());
       return `<div class="lesson-content">
@@ -938,7 +1037,7 @@
         throw new Error(`Complete PDF or slide text is missing for unit ${n}.`);
       }
       const app = activeLecture.application;
-      activeGlossary = prepareUnitReading(window.pdfUnitContent[n]).glossary;
+      activeGlossary = prepareUnitReading(window.pdfUnitContent[n], n).glossary;
       document.getElementById("modalEyebrow").textContent = `LECTURE ${String(activeLecture.n).padStart(2,"0")} · ${categoryNames[activeLecture.category].toUpperCase()}`;
       document.getElementById("modalTitle").textContent = mode === "study" ? activeLecture.title : app.title;
       modalContent.innerHTML = `
