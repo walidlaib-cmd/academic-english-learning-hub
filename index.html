@@ -93,6 +93,7 @@
     .card-actions { display:flex; gap:8px; padding:0 18px 17px; }
     .card-actions .btn { padding:10px 11px; font-size:.92rem; flex:1; }
     .card-actions .btn-primary { flex:1.2; }
+    .card-actions .btn-download { flex:1; font-size:.82rem; }
     .card-actions [data-study] { font-size:1rem; font-weight:800; letter-spacing:.01em; }
     .empty { display:none; padding:34px; text-align:center; color:var(--muted); background:#fff; border:1px dashed var(--line); border-radius:14px; }
     .method { margin-top:36px; background:linear-gradient(120deg,#fff,#f7fafc); border:1px solid var(--line); border-radius:16px; padding:24px; }
@@ -650,6 +651,7 @@
           <div class="card-actions">
             <button class="btn btn-primary" type="button" data-study="${item.n}" aria-label="Study unit ${item.n}: ${esc(item.title)}">STUDY UNIT</button>
             <button class="btn btn-light" type="button" data-app="${item.n}">Application</button>
+            <a class="btn btn-light btn-download" href="pdfs/Unit_${String(item.n).padStart(2,"0")}.pdf" download="Unit_${String(item.n).padStart(2,"0")}.pdf" aria-label="Download PDF for lecture ${item.n}: ${esc(item.title)}">Download PDF</a>
           </div>
         </article>`).join("");
       emptyState.style.display = visible.length ? "none" : "block";
@@ -1003,6 +1005,7 @@
           ? `${entry.term}: ${entry.meaning}`
           : `Glossary ${number}: ${entry.meaning}`;
         panel.hidden = false;
+        panel.scrollIntoView({block:"nearest", behavior:"smooth"});
         return;
       }
       const summaryButton = event.target.closest("[data-check-summary]");
